@@ -581,8 +581,8 @@ function CacheEnemyUnits()
                 local object_health_percentage = math.floor((object_health / object_health_max) * 100)
 
                 local _, reaction = pcall(UnitReaction, "player", object)
-                local _, special_enemy_target = pcall(SpecialTargetCheck, object)
-                local _, special_aura_target = pcall(SpecialAurachCheck, object)
+                local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
+                local _, special_aura_target = pcall(SpecialEnemyAurasCheck, object)
                 local _, tapped_by_player = pcall(UnitIsTappedByPlayer, object)
                 local _, tapped_by_all_threat_list = pcall(UnitIsTappedByAllThreatList, object)
 
@@ -590,8 +590,7 @@ function CacheEnemyUnits()
                 if bitband > 0 then
                     if distance <= 40 then
                         if object_health > 0 then
-                            --if reaction <= 4 and not special_aura_target and (tapped_by_player or tapped_by_all or special_enemy_target) then
-                            if reaction <= 4 and (tapped_by_player or tapped_by_all or special_enemy_target) then
+                            if reaction and reaction <= 4 and not special_aura_target and (tapped_by_me or tapped_by_all or special_enemy_target) then
                                 if CACHEUNITSALGORITHM == "lowest" then
                                     CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage}
                                     table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)

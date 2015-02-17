@@ -137,10 +137,8 @@ function ProbablyEngine.protected.FireHack()
 				end
 				uau_cache_count[unit..distance..tostring(ignoreCombat)] = total
 				uau_cache_time[unit..distance..tostring(ignoreCombat)] = GetTime()
-				DEBUG(1, "Enemies in Area("..total..")")
 				return total
 			else
-				DEBUG(1, "Enemies in Area(0)")
 				return 0
 			end
 		end
