@@ -1,0 +1,15 @@
+## Interface: 60000
+## Title: RotAgent
+## Notes: RotAgent (Rotation Agent) for ProbablyEngine
+## Author: StinkyTwitch
+## Version: 0.1
+## Dependencies: Probably
+
+Externals\LibStub.lua
+Externals\LibDraw.lua
+
+Library\Firehack.lua
+Library\Globals.lua
+Library\LibHunter.lua
+
+Rotations\Hunter\Survival.lua
