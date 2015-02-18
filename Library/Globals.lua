@@ -362,6 +362,13 @@ function AutoTargetEnemy()
     return false
 end
 
+function CacheUnitsShow()
+    local DiesalGUI = LibStub("DiesalGUI-1.0")
+    local explore = DiesalGUI:Create('TableExplorer')
+    explore:SetTable("Cache Units Table", CACHEUNITSTABLE)
+    explore:BuildTree()
+end
+
 function DEBUG(level, debug_string)
     if DEBUGTOGGLE then
         if level == 5 and DEBUGLOGLEVEL >= 5 then
@@ -548,7 +555,10 @@ end
 OBJECT MANAGER
 --------------------------------------------------------------------------------------------------]]
 function CacheEnemyUnits()
-    wipe(CACHEUNITSTABLE)
+    --wipe(CACHEUNITSTABLE)
+    for k in pairs(CACHEUNITSTABLE) do
+        CACHEUNITSTABLE[k] = nil
+    end
 
     -- FIREHACK
     if FireHack then
@@ -567,10 +577,10 @@ function CacheEnemyUnits()
                 local dy = y2 - y1
                 local dz = z2 - z1
                 local distance = math.sqrt((dx*dx) + (dy*dy) + (dz*dz))
-
                 local _, object_health = pcall(UnitHealth, object)
                 local _, object_health_max = pcall(UnitHealthMax, object)
                 local object_health_percentage = math.floor((object_health / object_health_max) * 100)
+                local _, object_name = pcall(UnitName, object)
                 local _, reaction = pcall(UnitReaction, "player", object)
                 local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
                 local _, special_aura_target = pcall(SpecialAurasCheck, object)
@@ -584,10 +594,10 @@ function CacheEnemyUnits()
                         if object_health > 0 then
                             if reaction and reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
                                 if CACHEUNITSALGORITHM == "lowest" then
-                                    CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage}
+                                    CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
                                     table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
                                 elseif CACHEUNITSALGORITHM == "nearest" then
-                                    CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance}
+                                    CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
                                     table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
                                 end
                             end

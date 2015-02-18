@@ -529,7 +529,7 @@ function()
 		function()
 			PrimaryStatsTableUpdate()
 			SecondaryStatsTableUpdate()
-			CACHEUNITSTABLE = {}
+			--CACHEUNITSTABLE = {}
 
 			-- In Combat Timer Functions
 			if ProbablyEngine.config.read('button_states', 'MasterToggle', false)
