@@ -18,6 +18,7 @@ GLOBAL TABLES/VARIABLES
 AUTOTARGETALGORITHM = "lowest"
 CACHEUNITSALGORITHM = "lowest"
 CACHEUNITSTABLE = {}
+CURRENTTARGETINFOTABLE = {}
 PRIMARYBASESTATS = {}
 SECONDARYBASESTATS = {}
 DEBUGLOGLEVEL = 1
@@ -123,6 +124,29 @@ ProbablyEngine.condition.register("cc", function(target)
             return false
         end
     end
+end)
+
+ProbablyEngine.condition.register("ccinarea", function(target, spell)
+    if not UnitExists(target) then
+        return false
+    end
+
+    local splash_radius = tonumber(spell)
+
+    for i=1, #CACHEUNITSTABLE do
+        local target_guid = UnitGUID(target)
+        local object_guid = UnitGUID(CACHEUNITSTABLE[i].key)
+
+        if target_guid ~= object_guid then
+            local distance = GetDistance(target, CACHEUNITSTABLE[i].key)
+            local ccd_unit = SpecialAurasCheck(CACHEUNITSTABLE[i].key)
+
+            if distance <= splash_radius and ccd_unit then
+                return true
+            end
+        end
+    end
+    return false
 end)
 
 ProbablyEngine.condition.register("distancetotarget", function(target)
@@ -369,6 +393,26 @@ function CacheUnitsShow()
     explore:BuildTree()
 end
 
+function CurrentTargetInfo()
+    if UnitExists("target") then
+        local target_guid = UnitGUID("target")
+        local target_name = UnitName("target")
+        local target_affecting_combat = nil
+        local target_attackable = nil
+        local target_distance = nil
+        local target_health = nil
+        local target_reaction = nil
+        local target_special_aura = nil
+        local target_special_target = nil
+        local target_tapped_by_me = nil
+        local target_tapped_by_all = nil
+    else
+        for k in pairs(CURRENTTARGETINFOTABLE) do
+            CURRENTTARGETINFOTABLE[k] = nil
+        end
+    end
+end
+
 function DEBUG(level, debug_string)
     if DEBUGTOGGLE then
         if level == 5 and DEBUGLOGLEVEL >= 5 then
@@ -385,6 +429,18 @@ function DEBUG(level, debug_string)
             return
         end
     end
+end
+
+function GetDistance(a, b)
+    local a, b = a, b
+
+    if UnitExists(a) and UnitIsVisible(a) and UnitExists(b) and UnitIsVisible(b) then
+        local _, ax, ay, az = pcall(ObjectPosition, a)
+        local _, bx, by, bz = pcall(ObjectPosition, b)
+        distance = math.sqrt(((bx-ax)^2) + ((by-ay)^2) + ((bz-az)^2))
+        return distance
+    end
+    return 0
 end
 
 function onUpdate(NotificationFrame, elapsed)
@@ -474,12 +530,14 @@ function SpecialAurasCheck(unit)
 
 	for i = 1, 40 do
 		local debuff = select(11, UnitDebuff(unit, i))
+        if debuff == nil then
+            break
+        end
         if SpecialAuras[tonumber(debuff)] ~= nil then
         	return true
-        else
-            return false
         end
 	end
+    return false
 end
 
 function SpecialEnemyTargetsCheck(unit)
@@ -586,13 +644,10 @@ function CacheEnemyUnits()
                 local _, special_aura_target = pcall(SpecialAurasCheck, object)
                 local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
 
-                DEBUG(2, "bitband("..tostring(bitband)..")")
                 if bitband > 0 then
-                    DEBUG(2, "distance("..tostring(distance)..")")
                     if distance <= 40 then
-                        DEBUG(2, "health("..tostring(object_health)..")")
                         if object_health > 0 then
-                            if reaction and reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
+                            if reaction and reaction <= 4 and (unit_affecting_combat or special_enemy_target) then
                                 if CACHEUNITSALGORITHM == "lowest" then
                                     CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
                                     table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)

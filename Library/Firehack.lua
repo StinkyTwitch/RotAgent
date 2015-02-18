@@ -126,7 +126,6 @@ function ProbablyEngine.protected.FireHack()
 						local _, combat = pcall(UnitAffectingCombat, object)
 						local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
 						local _, special_aura_target = pcall(SpecialAurasCheck, object)
-						print(reaction, special_aura_target, ignoreCombat, combat, special_enemy_target)
 						if reaction and reaction <= 4 and not special_aura_target and (ignoreCombat or combat or special_enemy_target) then
 							if Distance(object, unit) <= distance then
 								total = total + 1

@@ -307,7 +307,7 @@ local combat = {
 
 		--------------------------------------------------------------------------------------------
 		--actions.aoe+=/explosive_trap,if=dot.explosive_trap.remains<=5
-        { s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", }, "target.ground", },
+        { s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", }, "target.ground", },
 
 		--------------------------------------------------------------------------------------------
 		--actions.aoe+=/a_murder_of_crows
@@ -427,7 +427,7 @@ local combat = {
 	------------------------------------------------------------------------------------------------
 	--actions+=/explosive_trap
 	--{ s.ExplosiveTrap1, { "!player.buff("..s.TrapLauncher..")", }, },
-	--{ s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")" }, "target.ground", },
+	{ s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "!modifier.lalt", }, "target.ground", },
 
 	------------------------------------------------------------------------------------------------
 	--# Cast a second shot for steady focus if that won't cap us.
@@ -529,7 +529,11 @@ function()
 		function()
 			PrimaryStatsTableUpdate()
 			SecondaryStatsTableUpdate()
-			--CACHEUNITSTABLE = {}
+            CurrentTargetInfo()
+
+            if not ProbablyEngine.module.player.combat then
+                wipe(CACHEUNITSTABLE)
+            end
 
 			-- In Combat Timer Functions
 			if ProbablyEngine.config.read('button_states', 'MasterToggle', false)
