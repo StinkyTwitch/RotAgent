@@ -12,6 +12,5 @@ Library\Firehack.lua
 Library\Globals.lua
 Library\LibHunter.lua
 Library\VisualHelpers.lua
-Library\WindowHelpers.lua
 
 Rotations\Hunter\Survival.lua
