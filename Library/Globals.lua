@@ -177,15 +177,16 @@ ProbablyEngine.condition.register("focus.deficit", function(target)
 	return max_power - cur_power
 end)
 
-ProbablyEngine.condition.register("spell.regen", function(target, spell)
-	local name, rank, icon, cast_time, min_range, max_range = GetSpellInfo(spell)
-	if cast_time == 0 then
-		cast_time = 1
-	end
-	local cur_regen = select(2, GetPowerRegen(target))
-	local cast_time_in_seconds = cast_time / 1000.0
+ProbablyEngine.condition.register("item.cooldown", function(target, spell)
+    local start, duration, enable = GetItemCooldown(spell)
 
-	return cast_time_in_seconds * cur_regen
+    if not start then
+        return false
+    end
+    if start ~= 0 then
+        return (start + duration - GetTime())
+    end
+    return 0
 end)
 
 ProbablyEngine.condition.register("anystats.proc", function(target, spell)
@@ -320,6 +321,17 @@ ProbablyEngine.condition.register("versatility.proc", function(target, spell)
 	else
 		return false
 	end
+end)
+
+ProbablyEngine.condition.register("spell.regen", function(target, spell)
+    local name, rank, icon, cast_time, min_range, max_range = GetSpellInfo(spell)
+    if cast_time == 0 then
+        cast_time = 1
+    end
+    local cur_regen = select(2, GetPowerRegen(target))
+    local cast_time_in_seconds = cast_time / 1000.0
+
+    return cast_time_in_seconds * cur_regen
 end)
 
 
@@ -569,13 +581,13 @@ function TargetIsImmuneCheck(debuglevel, unit)
     local special_target = SpecialEnemyTargetsCheck(unit)
 
     if has_aura then
-        DEBUG(debuglevel, "TargetIsImmuneCheck("..unit..") Special Aura?("..has_aura..")")
+        DEBUG(debuglevel, "TargetIsImmuneCheck("..unit..") Special Aura?("..tostring(has_aura)..")")
         return true
     elseif not can_attack then
-        DEBUG(debuglevel, "TargetIsImmuneCheck("..unit..") Attackable?("..can_attack..")")
+        DEBUG(debuglevel, "TargetIsImmuneCheck("..unit..") Attackable?("..tostring(can_attack)..")")
         return true
     elseif not in_combat and not special_target then
-        DEBUG(debuglevel, "TargetIsImmuneCheck Combat?("..in_combat.."), Special Target?("..special_target..")")
+        DEBUG(debuglevel, "TargetIsImmuneCheck Combat?("..tostring(in_combat).."), Special Target?("..tostring(special_target)..")")
         return true
     else
         DEBUG(debuglevel, "TargetIsImmuneCheck("..unit..") is false")

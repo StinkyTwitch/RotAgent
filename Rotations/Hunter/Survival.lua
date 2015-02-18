@@ -84,6 +84,7 @@ local s = {
 	Trinket1 = "#trinket1",
 	Trinket2 = "#trinket2",
 	-- BUFFS
+    ArchmagesIncandescence = "177161",
 	ArchmagesGreaterIncandescence = "177172",
 	BalancedFate = "177038",
 	Dazed = "15571",
@@ -245,7 +246,6 @@ local combat = {
 		end),
 		"toggle.consumables",
 	}, },
-
 	--(((cooldown.stampede.remains<1)&(cooldown.a_murder_of_crows.remains<1))|buff.archmages_greater_incandescence_agi.up)
 	{ s.AgilityPotion, {
 		"player.spell("..s.Stampede..").cooldown < 1",
@@ -253,7 +253,6 @@ local combat = {
 		"player.buff("..s.ArchmagesGreaterIncandescence..")",
 		"toggle.consumables",
 	}, },
-
 	--|target.time_to_die<=25
 	{ s.AgilityPotion, { "target.deathin <= 25", "toggle.consumables",  }, },
 
@@ -270,20 +269,20 @@ local combat = {
 		{ s.Stampede, { "player.buff("..s.AgilityPotion..")", }, },
 			--|cooldown.potion.remains&buff.archmages_greater_incandescence_agi.up
 		{ s.Stampede, {
-			"player.spell("..s.AgilityPotion..").cooldown > 0",
+			"player.item("..s.AgilityPotion..").cooldown > 0",
 			"player.buff("..s.ArchmagesGreaterIncandescence..")",
 		}, },
 			--|cooldown.potion.remains&trinket.stat.any.up
 		{ s.Stampede, {
-			"player.spell("..s.AgilityPotion..").cooldown > 0",
+			"player.item("..s.AgilityPotion..").cooldown > 0",
 			(function()
 				return(dynamicEval("player.agility.proc") or dynamicEval("player.crit.proc") or dynamicEval("player.multistrike.proc"))
 			end),
 		}, },
 			--|cooldown.potion.remains&buff.archmages_incandescence_agi.up
 		{ s.Stampede, {
-			"player.spell("..s.AgilityPotion..").cooldown > 0",
-			"player.buff("..s.ArchmagesGreaterIncandescence..")",
+			"player.item("..s.AgilityPotion..").cooldown > 0",
+			"player.buff("..s.ArchmagesIncandescence..")",
 		}, },
 
 		--------------------------------------------------------------------------------------------
@@ -371,21 +370,18 @@ local combat = {
 	--actions+=/stampede,if=
 		--buff.potion.up
 	{ s.Stampede, { "player.buff("..s.AgilityPotion..")", }, },
-
 		--|(cooldown.potion.remains&(buff.archmages_greater_incandescence_agi.up)
 	{ s.Stampede, {
-		"player.spell("..s.AgilityPotion..").cooldown > 0",
+		"player.item("..s.AgilityPotion..").cooldown > 0",
 		"player.buff("..s.ArchmagesGreaterIncandescence..")",
 	}, },
-
 		--|(cooldown.potion.remains&trinket.stat.any.up)
 	{ s.Stampede, {
-		"player.spell("..s.AgilityPotion..").cooldown > 0",
+		"player.item("..s.AgilityPotion..").cooldown > 0",
 		(function()
 			return(dynamicEval("player.agility.proc") or dynamicEval("player.crit.proc") or dynamicEval("player.multistrike.proc"))
 		end),
 	}, },
-
 		--|target.time_to_die<=25
 	{ s.Stampede, { "target.deathin <= 25", }, },
 
@@ -427,7 +423,7 @@ local combat = {
 	------------------------------------------------------------------------------------------------
 	--actions+=/explosive_trap
 	--{ s.ExplosiveTrap1, { "!player.buff("..s.TrapLauncher..")", }, },
-	{ s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "!modifier.lalt", }, "target.ground", },
+	{ s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "!modifier.lalt", "target.exists", }, "target.ground", },
 
 	------------------------------------------------------------------------------------------------
 	--# Cast a second shot for steady focus if that won't cap us.
