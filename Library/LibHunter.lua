@@ -246,7 +246,11 @@ function SlashCmdList.LIBHUNTERCMD(msg, editbox)
     elseif command == "stats" then
         BaseStatsPrint()
     elseif command == "tables" then
-        CacheUnitsShow()
+        if moretext == "cache" then
+            CacheUnitsTableShow()
+        elseif moretext == "target" then
+            CurrentTargetTableShow()
+        end
     else
         LibHunter.QueueSpell = nil
     end

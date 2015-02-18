@@ -531,11 +531,7 @@ function()
 		function()
 			PrimaryStatsTableUpdate()
 			SecondaryStatsTableUpdate()
-            CurrentTargetInfo()
-
-            if not ProbablyEngine.module.player.combat then
-                wipe(CACHEUNITSTABLE)
-            end
+            CurrentTargetTableInfo()
 
 			-- In Combat Timer Functions
 			if ProbablyEngine.config.read('button_states', 'MasterToggle', false)
