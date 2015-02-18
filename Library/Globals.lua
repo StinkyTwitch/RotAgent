@@ -431,6 +431,7 @@ function CurrentTargetTableInfo()
 		local target_tapped_by_me = tostring(UnitIsTappedByPlayer("target"))
 		local target_tapped_by_all = tostring(UnitIsTappedByAllThreatList("target"))
 		print(target_guid)
+		--[[
 		CURRENTTARGETINFOTABLE[1]	= {key = "guid", value = target_guid}
 		CURRENTTARGETINFOTABLE[2]	= {key = "name", value = target_name}
 		CURRENTTARGETINFOTABLE[3]	= {key = "in combat", value = target_affecting_combat}
@@ -445,6 +446,21 @@ function CurrentTargetTableInfo()
 		CURRENTTARGETINFOTABLE[12]	= {key = "special target", value = target_special_target}
 		CURRENTTARGETINFOTABLE[13]	= {key = "tapped by me", value = target_tapped_by_me}
 		CURRENTTARGETINFOTABLE[14]	= {key = "tapped by all", value = target_tapped_by_all}
+		]]
+		CURRENTTARGETINFOTABLE["guid"]	= target_guid
+		CURRENTTARGETINFOTABLE["name"]	= target_name
+		CURRENTTARGETINFOTABLE["in_combat"]	= target_affecting_combat
+		CURRENTTARGETINFOTABLE["icanattack"]	= target_attackable
+		CURRENTTARGETINFOTABLE["canattackme"]	= target_can_attack_me
+		CURRENTTARGETINFOTABLE["distance"]	= target_distance
+		CURRENTTARGETINFOTABLE["health"]	= target_health
+		CURRENTTARGETINFOTABLE["healthmax"]	= target_health_max
+		CURRENTTARGETINFOTABLE["healthpct"]	= target_health_percentage
+		CURRENTTARGETINFOTABLE["reaction"]	= target_reaction
+		CURRENTTARGETINFOTABLE["specialaura"]	= target_special_aura
+		CURRENTTARGETINFOTABLE["specialtarget"]	= target_special_target
+		CURRENTTARGETINFOTABLE["tappedbyme"]	= target_tapped_by_me
+		CURRENTTARGETINFOTABLE["tappedbyme"]	= target_tapped_by_all
 	end
 end
 
