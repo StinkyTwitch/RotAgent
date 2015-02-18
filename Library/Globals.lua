@@ -24,7 +24,7 @@ DEBUGLOGLEVEL = 1
 DEBUGTOGGLE = true
 LIBDRAWPARSEDTARGET = nil
 
-SpecialEnemyAuras = {
+SpecialAuras = {
     -- CROWD CONTROL
     [118]       = "118",        -- Polymorph
     [1513]      = "1513",       -- Scare Beast
@@ -117,7 +117,7 @@ ProbablyEngine.condition.register("cc", function(target)
     if not UnitExists(target) then
         return false
     else
-        if SpecialEnemyAurasCheck(target) then
+        if SpecialAurasCheck(target) then
             return true
         else
             return false
@@ -459,7 +459,7 @@ function SecondaryStatsTableUpdate()
 	end
 end
 
-function SpecialEnemyAurasCheck(unit)
+function SpecialAurasCheck(unit)
 	local unit = unit
 	if not UnitExists(unit) then
 		return false
@@ -467,15 +467,7 @@ function SpecialEnemyAurasCheck(unit)
 
 	for i = 1, 40 do
 		local debuff = select(11, UnitDebuff(unit, i))
-
-        --[[
-		for k,v in pairs(SpecialEnemyAuras) do
-			if spell_id == v then
-				return true
-			end
-		end
-        -]]
-        if SpecialEnemyAuras[tonumber(debuff)] ~= nil then
+        if SpecialAuras[tonumber(debuff)] ~= nil then
         	return true
         else
             return false
@@ -506,7 +498,7 @@ function TargetIsImmuneCheck(debuglevel, unit)
         return false
     end
 
-    local has_aura = SpecialEnemyAurasCheck(unit)
+    local has_aura = SpecialAurasCheck(unit)
     local can_attack = UnitCanAttack("player", unit)
     local in_combat = UnitAffectingCombat(unit)
     local special_target = SpecialEnemyTargetsCheck(unit)
@@ -579,18 +571,18 @@ function CacheEnemyUnits()
                 local _, object_health = pcall(UnitHealth, object)
                 local _, object_health_max = pcall(UnitHealthMax, object)
                 local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-
                 local _, reaction = pcall(UnitReaction, "player", object)
                 local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-                local _, special_aura_target = pcall(SpecialEnemyAurasCheck, object)
-                local _, tapped_by_player = pcall(UnitIsTappedByPlayer, object)
-                local _, tapped_by_all_threat_list = pcall(UnitIsTappedByAllThreatList, object)
+                local _, special_aura_target = pcall(SpecialAurasCheck, object)
+                local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
 
-
+                DEBUG(2, "bitband("..tostring(bitband)..")")
                 if bitband > 0 then
+                    DEBUG(2, "distance("..tostring(distance)..")")
                     if distance <= 40 then
+                        DEBUG(2, "health("..tostring(object_health)..")")
                         if object_health > 0 then
-                            if reaction and reaction <= 4 and not special_aura_target and (tapped_by_me or tapped_by_all or special_enemy_target) then
+                            if reaction and reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
                                 if CACHEUNITSALGORITHM == "lowest" then
                                     CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage}
                                     table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
@@ -620,14 +612,12 @@ function CacheEnemyUnits()
                 local _, object_health = pcall(UnitHealth, object)
                 local _, object_health_max = pcall(UnitHealthMax, object)
                 local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-
                 local _, object_reaction = pcall(UnitReaction, "player", object)
                 local _, special_target = pcall(SpecialTargetCheck, object)
-                local _, object_tapped_by_player = pcall(UnitIsTappedByPlayer, object)
-                local _, object_tapped_by_all_threat_list = pcall(UnitIsTappedByAllThreatList, object)
+                local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
 
                 if object_attackable and object_health > 0 and not object_is_player and not object_is_player_pet then
-                    if object_reaction <= 4 and (object_tapped_by_player or object_tapped_by_all_threat_list or special_target) then
+                    if object_reaction and object_reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
                         if CACHEUNITSALGORITHM == "nearest" then
                             CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object_text, value = distance}
                             table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)

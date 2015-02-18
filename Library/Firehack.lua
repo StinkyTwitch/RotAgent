@@ -122,13 +122,12 @@ function ProbablyEngine.protected.FireHack()
 					local object = ObjectWithIndex(i)
 					local _, oType = pcall(ObjectType, object)
 					if bit.band(oType, ObjectTypes.Unit) > 0 then
-						local reaction = UnitReaction("player", object)
-						local combat = UnitAffectingCombat(object)
+						local _, reaction = pcall(UnitReaction, "player", object)
+						local _, combat = pcall(UnitAffectingCombat, object)
 						local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-						local _, special_aura_target = pcall(SpecialEnemyAurasCheck, object)
-						local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
-						local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-						if reaction and reaction <= 4 and not special_aura_target and (ignoreCombat or tapped_by_me or tapped_by_all or special_enemy_target) then
+						local _, special_aura_target = pcall(SpecialAurasCheck, object)
+						print(reaction, special_aura_target, ignoreCombat, combat, special_enemy_target)
+						if reaction and reaction <= 4 and not special_aura_target and (ignoreCombat or combat or special_enemy_target) then
 							if Distance(object, unit) <= distance then
 								total = total + 1
 							end
@@ -137,8 +136,10 @@ function ProbablyEngine.protected.FireHack()
 				end
 				uau_cache_count[unit..distance..tostring(ignoreCombat)] = total
 				uau_cache_time[unit..distance..tostring(ignoreCombat)] = GetTime()
+				DEBUG(1, "Total Enemies ("..total..")")
 				return total
 			else
+				DEBUG(1, "Total Enemies (0)")
 				return 0
 			end
 		end
