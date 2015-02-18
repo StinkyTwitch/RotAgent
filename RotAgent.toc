@@ -14,3 +14,4 @@ Library\LibHunter.lua
 Library\VisualHelpers.lua
 
 Rotations\Hunter\Survival.lua
+Rotations\Shaman\Elemental.lua

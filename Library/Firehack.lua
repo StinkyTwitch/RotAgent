@@ -26,55 +26,6 @@ function ProbablyEngine.protected.FireHack()
 
 		local stickyValue = GetCVar("deselectOnClick")
 
-		--[[
-		local SpecialEnemyTargets = {
-			-- TRAINING DUMMIES
-			[31144] = "31144",		-- Training Dummy - Lvl 80
-			[31146] = "31146",		-- Raider's Training Dummy - Lvl ??
-			[32541] = "32541",		-- Initiate's Training Dummy - Lvl 55 (Scarlet Enclave)
-			[32542] = "32542",		-- Disciple's Training Dummy - Lvl 65
-			[32545] = "32545",		-- Initiate's Training Dummy - Lvl 55
-			[32546] = "32546",		-- Ebon Knight's Training Dummy - Lvl 80
-			[32666] = "32666",		-- Training Dummy - Lvl 60
-			[32667] = "32667",		-- Training Dummy - Lvl 70
-			[46647] = "46647",		-- Training Dummy - Lvl 85
-			[60197] = "60197",		-- Scarlet Monastery Dummy
-			[67127] = "67127",		-- Training Dummy - Lvl 90
-			[87318] = "87318",		-- Dungeoneer's Training Dummy <Damage> ALLIANCE GARRISON
-			[87761] = "87761",		-- Dungeoneer's Training Dummy <Damage> HORDE GARRISON
-			[87322] = "87322",		-- Dungeoneer's Training Dummy <Tanking> ALLIANCE ASHRAN BASE
-			[88314] = "88314",		-- Dungeoneer's Training Dummy <Tanking> ALLIANCE GARRISON
-			[88836] = "88836",		-- Dungeoneer's Training Dummy <Tanking> HORDE ASHRAN BASE
-			[88288] = "88288",		-- Dunteoneer's Training Dummy <Tanking> HORDE GARRISON
-			-- WOD DUNGEONS/RAIDS
-			[75966] = "75966",		-- Defiled Spirit (Shadowmoon Burial Grounds)
-			[76220] = "76220",		-- Blazing Trickster (Auchindoun Normal)
-			[76267] = "76267",		-- Solar Zealot (Skyreach)
-			[76518] = "76518",		-- Ritual of Bones (Shadowmoon Burial Grounds)
-			[77252] = "77252",		-- Ore Crate (BRF Oregorger)
-			[77665] = "77665",		-- Iron Bomber (BRF Blackhand)
-			[79504] = "79504",		-- Ore Crate (BRF Oregorger)
-			[79511] = "79511",		-- Blazing Trickster (Auchindoun Heroic)
-			[81638] = "81638",		-- Aqueous Globule (The Everbloom)
-			[86644] = "86644",		-- Ore Crate (BRF Oregorger)
-			[153792] = "153792",	-- Rallying Banner (UBRS Black Iron Grunt)
-		}
-
-		-- THANK YOU TO MIRAKURU!
-		local function SpecialTargetCheck(unit)
-			local unit = unit
-			local _,_,_,_,_,unit_id,_ = strsplit("-",UnitGUID(unit))
-
-			if not UnitExists(unit) then
-				return false
-			end
-			if SpecialEnemyTargets[tonumber(unit_id)] ~= nil then
-				return true
-			end
-			return false
-		end
-		]]
-
 		function IterateObjects(callback, ...)
 			local totalObjects = ObjectCount()
 			for i = 1, totalObjects do

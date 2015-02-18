@@ -179,9 +179,10 @@ ProbablyEngine.condition.register("focus.deficit", function(target)
 	return max_power - cur_power
 end)
 
---[[
-ProbablyEngine.condition.register("item.cooldown", function(target, spell)
-    local start, duration, enable = GetItemCooldown(spell)
+ProbablyEngine.condition.register("item.cooldown", function(target, item_id)
+    local item_id = tonumber(item_id)
+    print(tostring(item_id))
+    local start, duration, enable = GetItemCooldown(item_id)
 
     if not start then
         return false
@@ -191,7 +192,6 @@ ProbablyEngine.condition.register("item.cooldown", function(target, spell)
     end
     return 0
 end)
-]]
 
 ProbablyEngine.condition.register("anystats.proc", function(target, spell)
 	-- Check Primary Stats

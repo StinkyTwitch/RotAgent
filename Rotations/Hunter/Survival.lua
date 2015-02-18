@@ -80,6 +80,7 @@ local s = {
 	Berserking = "26297",
 	-- OBJECTS
 	AgilityPotion = "#109217",
+    AgilityPotionID = "109217",
 	HealthStone = "#5512",
 	Trinket1 = "#trinket1",
 	Trinket2 = "#trinket2",
@@ -271,19 +272,19 @@ local combat = {
 		{ s.Stampede, { "player.buff("..s.AgilityPotion..")", }, },
 			--|cooldown.potion.remains&buff.archmages_greater_incandescence_agi.up
 		{ s.Stampede, {
-			"player.spell("..s.AgilityPotion..").cooldown > 0",
+			"player.item("..s.AgilityPotionID..").cooldown > 0",
 			"player.buff("..s.ArchmagesGreaterIncandescence..")",
 		}, },
 			--|cooldown.potion.remains&trinket.stat.any.up
 		{ s.Stampede, {
-			"player.spell("..s.AgilityPotion..").cooldown > 0",
+			"player.item("..s.AgilityPotionID..").cooldown > 0",
 			(function()
 				return(dynamicEval("player.agility.proc") or dynamicEval("player.crit.proc") or dynamicEval("player.multistrike.proc"))
 			end),
 		}, },
 			--|cooldown.potion.remains&buff.archmages_incandescence_agi.up
 		{ s.Stampede, {
-			"player.spell("..s.AgilityPotion..").cooldown > 0",
+			"player.item("..s.AgilityPotionID..").cooldown > 0",
 			"player.buff("..s.ArchmagesIncandescence..")",
 		}, },
 
@@ -375,13 +376,13 @@ local combat = {
 
 		--|(cooldown.potion.remains&(buff.archmages_greater_incandescence_agi.up)
 	{ s.Stampede, {
-		"player.spell("..s.AgilityPotion..").cooldown > 0",
+		"player.item("..s.AgilityPotionID..").cooldown > 0",
 		"player.buff("..s.ArchmagesGreaterIncandescence..")",
 	}, },
 
 		--|(cooldown.potion.remains&trinket.stat.any.up)
 	{ s.Stampede, {
-		"player.spell("..s.AgilityPotion..").cooldown > 0",
+		"player.item("..s.AgilityPotionID..").cooldown > 0",
 		(function()
 			return(dynamicEval("player.agility.proc") or dynamicEval("player.crit.proc") or dynamicEval("player.multistrike.proc"))
 		end),
