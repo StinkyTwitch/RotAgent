@@ -10,9 +10,9 @@ Rotation Agent a rotation profile for Probably Engine
 
 **left control**
 * In Combt
-**Will throw a Freezing Trap at your mouseover targets feet. This is useful while in combat so you don't inadvertently apply Serpent Sting to a unit that you want to CC.
+  * Will throw a Freezing Trap at your mouseover targets feet. This is useful while in combat so you don't inadvertently apply Serpent Sting to a unit that you want to CC.
 * Out of Combat
-** Will use "Fetch" on your pet if you have the glyph.
+  * Will use "Fetch" on your pet if you have the glyph.
 
 **right alt**
 * Force Arcane Shot or Multi-Shot to apply Serpent Sting to the mouseover target. This is useful as the routine will not automatically use Arcane Shot or Multi-Shot on Units that you are not in combat with. The toggle for 'Mouseover Serpent Sting' must be on.
