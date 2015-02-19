@@ -1,7 +1,7 @@
 # RotAgent
 Rotation Agent a rotation profile for Probably Engine
 
-## Usage
+## Hunter Usage
 **left shift**
 * Will pause the routine. Stops any current casts, stops attacking and puts your pet on follow.
 
@@ -16,6 +16,9 @@ Rotation Agent a rotation profile for Probably Engine
 
 **right alt**
 * Force Arcane Shot or Multi-Shot to apply Serpent Sting to the mouseover target. This is useful as the routine will not automatically use Arcane Shot or Multi-Shot on Units that you are not in combat with. The toggle for 'Mouseover Serpent Sting' must be on.
+
+**right control**
+* Forces the rotation to pool focus. Either using Cobra Shot or Focussing Shot if talented.
 
 ##Version 0.1
 - Hunter only support in this initial version.
