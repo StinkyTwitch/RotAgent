@@ -394,7 +394,7 @@ local combat = {
 	------------------------------------------------------------------------------------------------
 	--actions+=/a_murder_of_crows
 	{ s.AMurderofCrows, { "target.deathin > 60", "modifier.cooldowns", }, },
-	{ s.AMurderofCrows, { "target.deathin < 12", }, },
+	{ s.AMurderofCrows, { "target.deathin < 12", "target.deathin > 1", }, },
 	--{ s.AMurderofCrows, { "target.health.actual < 200000", }, },
 
 	------------------------------------------------------------------------------------------------
@@ -531,7 +531,7 @@ function()
 		function()
 			PrimaryStatsTableUpdate()
 			SecondaryStatsTableUpdate()
-            CurrentTargetTableInfo()
+            CurrentTargetTableInfo("target")
 
 			-- In Combat Timer Functions
 			if ProbablyEngine.config.read('button_states', 'MasterToggle', false)

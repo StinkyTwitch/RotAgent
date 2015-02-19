@@ -7,7 +7,7 @@
 --]]------------------------------------------------------------------------------------------------
 local addonName = ...
 local addonVersion = GetAddOnMetadata(addonName, "Version")
-
+local deathTrack = { }
 
 
 
@@ -175,15 +175,12 @@ end)
 ProbablyEngine.condition.register("focus.deficit", function(target)
 	local max_power = UnitPowerMax(target)
 	local cur_power = UnitPower(target)
-
 	return max_power - cur_power
 end)
 
 ProbablyEngine.condition.register("item.cooldown", function(target, item_id)
 	local item_id = tonumber(item_id)
-	print(tostring(item_id))
 	local start, duration, enable = GetItemCooldown(item_id)
-
 	if not start then
 		return false
 	end
@@ -409,58 +406,67 @@ function CacheUnitsTableShow()
 	explore:BuildTree()
 end
 
-function CurrentTargetTableInfo()
-	if UnitExists("target") then
-		local target_guid = tostring(UnitGUID("target"))
-		local target_name = tostring(UnitName("target"))
-		local target_affecting_combat = tostring(UnitAffectingCombat("target"))
-		local target_attackable = tostring(UnitCanAttack("player", "target"))
-		local target_can_attack_me = tostring(UnitCanAttack("target", "player"))
+function CurrentTargetTableInfo(target)
+	local target = target
+	local object_pointer = nil
+	local total_objects = ObjectCount()
+
+	for i=1, total_objects do
+		local _, object = pcall(ObjectWithIndex, i)
+		local _, object_exists = pcall(ObjectExists, object)
+
+		if object_exists then
+			local _, object_type = pcall(ObjectType, object)
+			local bitband = bit.band(object_type, ObjectTypes.Unit)
+			local guid = UnitGUID(object)
+			local type, zero, server_id, instance_id, zone_uid, unit_id, spawn_id = strsplit("-",UnitGUID(object))
+			if bitband > 0 then
+				if unit_id == target then
+					target = object
+				end
+			end
+		end
+	end
+
+	if UnitExists(target) then
+		local target_guid = tostring(UnitGUID(target))
+		local target_name = tostring(UnitName(target))
+		local target_affecting_combat = tostring(UnitAffectingCombat(target))
+		local target_attackable = tostring(UnitCanAttack("player", target))
+		local target_can_attack_me = tostring(UnitCanAttack(target, "player"))
 		local x1, y1, z1 = ObjectPosition("player")
-		local x2, y2, z2 = ObjectPosition("target")
+		local x2, y2, z2 = ObjectPosition(target)
 		local dx = x2 - x1
 		local dy = y2 - y1
 		local dz = z2 - z1
 		local target_distance = math.sqrt((dx*dx) + (dy*dy) + (dz*dz))
-		local target_health = UnitHealth("target")
-		local target_health_max = UnitHealthMax("target")
+		local target_health = UnitHealth(target)
+		local target_health_max = UnitHealthMax(target)
 		local target_health_percentage = math.floor((target_health / target_health_max) * 100)
-		local target_reaction = UnitReaction("player", "target")
-		local target_special_aura = tostring(SpecialAurasCheck("target"))
-		local target_special_target = tostring(SpecialEnemyTargetsCheck("target"))
-		local target_tapped_by_me = tostring(UnitIsTappedByPlayer("target"))
-		local target_tapped_by_all = tostring(UnitIsTappedByAllThreatList("target"))
-		print(target_guid)
-		--[[
-		CURRENTTARGETINFOTABLE[1]	= {key = "guid", value = target_guid}
-		CURRENTTARGETINFOTABLE[2]	= {key = "name", value = target_name}
-		CURRENTTARGETINFOTABLE[3]	= {key = "in combat", value = target_affecting_combat}
-		CURRENTTARGETINFOTABLE[4]	= {key = "i can attack", value = target_attackable}
-		CURRENTTARGETINFOTABLE[5]	= {key = "can attack me", value = target_can_attack_me}
-		CURRENTTARGETINFOTABLE[6]	= {key = "distance", value = target_distance}
-		CURRENTTARGETINFOTABLE[7]	= {key = "health", value = target_health}
-		CURRENTTARGETINFOTABLE[8]	= {key = "health max", value = target_health_max}
-		CURRENTTARGETINFOTABLE[9]	= {key = "health pct", value = target_health_percentage}
-		CURRENTTARGETINFOTABLE[10]	= {key = "reaction", value = target_reaction}
-		CURRENTTARGETINFOTABLE[11]	= {key = "special aura", value = target_special_aura}
-		CURRENTTARGETINFOTABLE[12]	= {key = "special target", value = target_special_target}
-		CURRENTTARGETINFOTABLE[13]	= {key = "tapped by me", value = target_tapped_by_me}
-		CURRENTTARGETINFOTABLE[14]	= {key = "tapped by all", value = target_tapped_by_all}
-		]]
-		CURRENTTARGETINFOTABLE["guid"]	= target_guid
-		CURRENTTARGETINFOTABLE["name"]	= target_name
-		CURRENTTARGETINFOTABLE["in_combat"]	= target_affecting_combat
-		CURRENTTARGETINFOTABLE["icanattack"]	= target_attackable
-		CURRENTTARGETINFOTABLE["canattackme"]	= target_can_attack_me
-		CURRENTTARGETINFOTABLE["distance"]	= target_distance
-		CURRENTTARGETINFOTABLE["health"]	= target_health
-		CURRENTTARGETINFOTABLE["healthmax"]	= target_health_max
-		CURRENTTARGETINFOTABLE["healthpct"]	= target_health_percentage
-		CURRENTTARGETINFOTABLE["reaction"]	= target_reaction
-		CURRENTTARGETINFOTABLE["specialaura"]	= target_special_aura
-		CURRENTTARGETINFOTABLE["specialtarget"]	= target_special_target
-		CURRENTTARGETINFOTABLE["tappedbyme"]	= target_tapped_by_me
-		CURRENTTARGETINFOTABLE["tappedbyme"]	= target_tapped_by_all
+		local target_reaction = UnitReaction("player", target)
+		local target_special_aura = tostring(SpecialAurasCheck(target))
+		local target_special_target = tostring(SpecialEnemyTargetsCheck(target))
+		local target_tapped_by_me = tostring(UnitIsTappedByPlayer(target))
+		local target_tapped_by_all = tostring(UnitIsTappedByAllThreatList(target))
+		local target_combat_reach = UnitCombatReach(target)
+		local target_deathin = TimeToDeath(target)
+
+		CURRENTTARGETINFOTABLE["01 guid"] = target_guid
+		CURRENTTARGETINFOTABLE["02 name"] = target_name
+		CURRENTTARGETINFOTABLE["03 distance"] = target_distance
+		CURRENTTARGETINFOTABLE["04 reach"] = target_combat_reach
+		CURRENTTARGETINFOTABLE["05 health act"] = target_health
+		CURRENTTARGETINFOTABLE["06 health max"] = target_health_max
+		CURRENTTARGETINFOTABLE["07 health pct"] = target_health_percentage
+		CURRENTTARGETINFOTABLE["08 combat"] = target_affecting_combat
+		CURRENTTARGETINFOTABLE["09 reaction"] = target_reaction
+		CURRENTTARGETINFOTABLE["10 special aura"] = target_special_aura
+		CURRENTTARGETINFOTABLE["11 special target"] = target_special_target
+		CURRENTTARGETINFOTABLE["12 tapped me"] = target_tapped_by_me
+		CURRENTTARGETINFOTABLE["13 tapped all"] = target_tapped_by_all
+		CURRENTTARGETINFOTABLE["14 attack->"] = target_attackable
+		CURRENTTARGETINFOTABLE["15 <-attack"] = target_can_attack_me
+		CURRENTTARGETINFOTABLE["16 deathin"] = target_deathin
 	end
 end
 
@@ -656,6 +662,34 @@ function TargetIsInFrontCheck(debuglevel, unit)
 
 	DEBUG(debuglevel, "TargetIsInFront ("..tostring(math.abs(math.deg(math.abs(player_facing - (facing))) - 180) < 90)..")")
 	return math.abs(math.deg(math.abs(player_facing - (facing))) - 180) < 90
+end
+
+function TimeToDeath(target)
+    local guid = UnitGUID(target)
+    if deathTrack[target] and deathTrack[target].guid == guid then
+        local start = deathTrack[target].time
+        local currentHP = UnitHealth(target)
+        local maxHP = deathTrack[target].start
+        local diff = maxHP - currentHP
+        local dura = GetTime() - start
+        local hpps = diff / dura
+        local death = currentHP / hpps
+        if death == math.huge then
+            return 8675309
+        elseif death < 0 then
+            return 0
+        else
+            return death
+        end
+    elseif deathTrack[target] then
+        table.empty(deathTrack[target])
+    else
+        deathTrack[target] = { }
+    end
+    deathTrack[target].guid = guid
+    deathTrack[target].time = GetTime()
+    deathTrack[target].start = UnitHealth(target)
+    return 8675309
 end
 
 
