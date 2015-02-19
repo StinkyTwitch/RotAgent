@@ -9,7 +9,7 @@ Rotation Agent a rotation profile for Probably Engine
 * This will cast Misdirection onto your current Focus target if you have one. If you do not have a Focus target it will attempt to misdirect to your mouseover target.
 
 **left control**
-* In Combt
+* In Combat
   * Will throw a Freezing Trap at your mouseover targets feet. This is useful while in combat so you don't inadvertently apply Serpent Sting to a unit that you want to CC.
 * Out of Combat
   * Will use "Fetch" on your pet if you have the glyph.
