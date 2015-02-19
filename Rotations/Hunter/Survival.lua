@@ -527,21 +527,20 @@ function()
 	PrimaryStatsTableInit()
 	SecondaryStatsTableInit()
 
-	C_Timer.NewTicker(0.25, (
-		function()
-			PrimaryStatsTableUpdate()
-			SecondaryStatsTableUpdate()
-            CurrentTargetTableInfo("target")
+	C_Timer.NewTicker(0.25,
+		(function()
+			if ProbablyEngine.config.read('button_states', 'MasterToggle', false) then
+                -- Run ONLY if the Rotation is toggled ON
+                PrimaryStatsTableUpdate()
+                SecondaryStatsTableUpdate()
+                CurrentTargetTableInfo("76806")
 
-			-- In Combat Timer Functions
-			if ProbablyEngine.config.read('button_states', 'MasterToggle', false)
-				and ProbablyEngine.module.player.combat
-			then
-                CacheEnemyUnits()
-
-                if ProbablyEngine.config.read('button_states', 'autotarget', false)
-                then
-                    AutoTargetEnemy()
+                -- Run ONLY if in Combat
+				if ProbablyEngine.module.player.combat then
+                    CacheEnemyUnits()
+                    if ProbablyEngine.config.read('button_states', 'autotarget', false) then
+                        AutoTargetEnemy()
+                    end
                 end
 			end
 		end),

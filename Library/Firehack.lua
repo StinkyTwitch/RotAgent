@@ -77,7 +77,10 @@ function ProbablyEngine.protected.FireHack()
 						local _, combat = pcall(UnitAffectingCombat, object)
 						local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
 						local _, special_aura_target = pcall(SpecialAurasCheck, object)
-						if reaction and reaction <= 4 and not special_aura_target and (ignoreCombat or combat or special_enemy_target) then
+						local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
+						local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
+						--if reaction and reaction <= 4 and not special_aura_target and (ignoreCombat or combat or special_enemy_target) then
+						if reaction and reaction <= 4 and (ignoreCombat or tapped_by_me or tapped_by_all or special_enemy_target) then
 							if Distance(object, unit) <= distance then
 								total = total + 1
 							end
