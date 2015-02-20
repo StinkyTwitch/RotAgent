@@ -11,6 +11,7 @@ Externals\LibDraw.lua
 Library\Firehack.lua
 Library\Globals.lua
 Library\LibHunter.lua
+Library\Status.lua
 Library\VisualHelpers.lua
 
 Rotations\Hunter\Survival.lua

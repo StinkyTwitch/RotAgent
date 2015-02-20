@@ -245,6 +245,12 @@ function SlashCmdList.LIBHUNTERCMD(msg, editbox)
         end
     elseif command == "stats" then
         BaseStatsPrint()
+    elseif command == "show" then
+        if moretext == "target" then
+            ShowLiveTargetTable()
+        elseif moretext == "cache" then
+            ShowLiveCacheTable()
+        end
     elseif command == "tables" then
         if moretext == "cache" then
             CacheUnitsTableShow()
