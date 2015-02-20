@@ -552,13 +552,12 @@ function()
 
 	C_Timer.NewTicker(0.25,
 		(function()
-			if ProbablyEngine.config.read('button_states', 'MasterToggle', false) then
+            CurrentTargetTableInfo("target")
+
+            if ProbablyEngine.config.read('button_states', 'MasterToggle', false) then
                 -- Run ONLY if the Rotation is toggled ON
                 PrimaryStatsTableUpdate()
                 SecondaryStatsTableUpdate()
-                if Firehack or oexecute then
-                    CurrentTargetTableInfo("target")
-                end
 
                 -- Run ONLY if in Combat
 				if ProbablyEngine.module.player.combat then

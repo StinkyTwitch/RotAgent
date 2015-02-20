@@ -818,15 +818,16 @@ function CacheEnemyUnits()
 				if bitband > 0 then
 					if distance <= 40 then
 						if object_health > 0 then
-							if reaction and reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
-								if tapped_by_me or tapped_by_all then
-									if CACHEUNITSALGORITHM == "lowest" then
-										CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
-										table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
-									elseif CACHEUNITSALGORITHM == "nearest" then
-										CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
-										table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
-									end
+							if reaction	and reaction <= 4
+								and not special_aura_target
+								and (tapped_by_me or tapped_by_all or special_enemy_target)
+							then
+								if CACHEUNITSALGORITHM == "lowest" then
+									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
+									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+								elseif CACHEUNITSALGORITHM == "nearest" then
+									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
+									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
 								end
 							end
 						end
