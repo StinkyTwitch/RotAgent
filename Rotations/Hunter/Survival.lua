@@ -132,7 +132,7 @@ local mouseover = {
     { s.FreezingTrap1, { "!player.buff("..s.TrapLauncher..")", "modifier.lcontrol", }, },
     { s.FreezingTrap2, { "player.buff("..s.TrapLauncher..")", "modifier.lcontrol", }, "mouseover.ground", },
     -- SERPENT STING (checks: No Debuff, Not Immune, Enemies Around Target)
-    { s.MultiShot, { "toggle.mouseovers", "!modifier.lcontrol", "modifier.multitarget", "!mouseover.debuff("..s.SerpentSting..")", "!mouseover.cc", "mouseover.area(8).enemies > 1", }, "mouseover", },
+    { s.MultiShot, { "toggle.mouseovers", "!modifier.lcontrol", "modifier.multitarget", "!mouseover.debuff("..s.SerpentSting..")", "!mouseover.cc", "!mouseover.ccinarea(8)", "mouseover.area(8).enemies > 1", }, "mouseover", },
     { s.ArcaneShot, { "toggle.mouseovers", "!modifier.lcontrol", "!mouseover.debuff("..s.SerpentSting..")", "!mouseover.cc", }, "mouseover", },
     -- FORCE SERPENT STING
     { s.MultiShot, { "toggle.mouseovers", "modifier.ralt", "modifier.multitarget", "!mouseover.debuff("..s.SerpentSting..")", "mouseover.area(8).enemies > 1", }, "mouseover", },
@@ -198,13 +198,35 @@ local spellqueue = {
 
 
 local opener3plus = {
-
+    { s.MultiShot, { "!target.debuff("..s.SerpentSting..")", "!target.ccinarea(10)", }, },
+    { s.Trinket1, { "modifier.cooldowns", }, },
+    { s.Trinket2, { "modifier.cooldowns", }, },
+    { s.BloodFury, { "modifier.cooldowns", }, },
+    { s.Barrage, },
+    { s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "ground.cluster(10)", }, },
+    { s.AMurderofCrows, { "modifier.cooldowns", }, },
 }
 local opener2 = {
-
+    { s.ArcaneShot, { "!target.debuff("..s.SerpentSting..")" }, },
+    { s.Trinket1, { "modifier.cooldowns", }, },
+    { s.Trinket2, { "modifier.cooldowns", }, },
+    { s.BloodFury, { "modifier.cooldowns", }, },
+    { s.Barrage, },
+    { s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "ground.cluster(10)", }, },
+    { s.AMurderofCrows, { "modifier.cooldowns", }, },
+    { s.BlackArrow, },
 }
 local opener = {
-
+    { s.Trinket1, { "modifier.cooldowns", }, },
+    { s.Trinket2, { "modifier.cooldowns", }, },
+    { s.BloodFury, { "modifier.cooldowns", }, },
+    { s.AMurderofCrows, { "modifier.cooldowns", }, },
+    { s.ExplosiveShot, },
+    { s.BlackArrow, },
+    { s.ArcaneShot, },
+    { s.ExplosiveShot, { "player.buff("..s.LockandLoad..")", }, },
+    { s.Berserking, { "modifier.cooldowns", }, },
+    { s.ArcaneTorrent, { "modifier.cooldowns", }, },
 }
 local ooc = {
     { s.Pause, { "modifier.lshift", }, },
@@ -309,7 +331,8 @@ local combat = {
 
 		--------------------------------------------------------------------------------------------
 		--actions.aoe+=/explosive_trap,if=dot.explosive_trap.remains<=5
-        { s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", }, "target.ground", },
+        { s.ExplosiveTrap1, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "!player.buff("..s.TrapLauncher..")", "!player.ccinarea(10)", }, },
+        { s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "ground.cluster(10)", }, },
 
 		--------------------------------------------------------------------------------------------
 		--actions.aoe+=/a_murder_of_crows
@@ -395,7 +418,7 @@ local combat = {
 	--actions+=/a_murder_of_crows
 	{ s.AMurderofCrows, { "target.deathin > 60", "modifier.cooldowns", }, },
 	{ s.AMurderofCrows, { "target.deathin < 12", "target.deathin > 1", }, },
-	--{ s.AMurderofCrows, { "target.health.actual < 200000", }, },
+	{ s.AMurderofCrows, { "target.health.actual < 200000", }, },
 
 	------------------------------------------------------------------------------------------------
 	--actions+=/black_arrow,if=!ticking
@@ -428,8 +451,8 @@ local combat = {
 
 	------------------------------------------------------------------------------------------------
 	--actions+=/explosive_trap
-	--{ s.ExplosiveTrap1, { "!player.buff("..s.TrapLauncher..")", }, },
-	{ s.ExplosiveTrap2, { "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "!modifier.lalt", "target.exists", }, "target.ground", },
+	--{ s.ExplosiveTrap1, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "!player.buff("..s.TrapLauncher..")", "!player.ccinarea(10)", }, },
+    { s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", }, "target.ground", },
 
 	------------------------------------------------------------------------------------------------
 	--# Cast a second shot for steady focus if that won't cap us.
@@ -468,9 +491,9 @@ ProbablyEngine.rotation.register_custom(255, "RotAgent - SurvivalTest",
     { s.PauseIncPet, { "pet.exists", "player.buff("..s.Food..")", }, },
     { s.Pause, { "!pet.exists", "player.buff("..s.Food..")", }, },
 
-    { opener3plus },
-    { opener2 },
-    { opener },
+    { opener3plus, { "target.area(10).enemies >= 3", "modifier.multitarget", "player.time < 4", }, },
+    { opener2, { "target.area(10).enemies >= 2", "modifier.multitarget", "player.time < 4", }, },
+    { opener, { "player.time < 4", }, },
 
 	{ defensive },
 	{ interrupt },
@@ -533,7 +556,9 @@ function()
                 -- Run ONLY if the Rotation is toggled ON
                 PrimaryStatsTableUpdate()
                 SecondaryStatsTableUpdate()
-                CurrentTargetTableInfo("76806")
+                if Firehack or oexecute then
+                    CurrentTargetTableInfo("target")
+                end
 
                 -- Run ONLY if in Combat
 				if ProbablyEngine.module.player.combat then

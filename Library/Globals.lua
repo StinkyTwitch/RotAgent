@@ -113,6 +113,11 @@ SpecialHealingTargets = {
 
 
 
+
+
+
+
+
 --[[------------------------------------------------------------------------------------------------
 PE EXTENDED
 --------------------------------------------------------------------------------------------------]]
@@ -134,17 +139,28 @@ ProbablyEngine.condition.register("ccinarea", function(target, spell)
 	end
 
 	local splash_radius = tonumber(spell)
+	local target = target
+	local object_pointer = nil
+	local total_objects = ObjectCount()
 
-	for i=1, #CACHEUNITSTABLE do
-		local target_guid = UnitGUID(target)
-		local object_guid = UnitGUID(CACHEUNITSTABLE[i].key)
+	for i=1, total_objects do
+		local _, object = pcall(ObjectWithIndex, i)
+		local _, object_exists = pcall(ObjectExists, object)
 
-		if target_guid ~= object_guid then
-			local distance = GetDistance(target, CACHEUNITSTABLE[i].key)
-			local ccd_unit = SpecialAurasCheck(CACHEUNITSTABLE[i].key)
+		if object_exists then
+			local _, object_type = pcall(ObjectType, object)
+			local bitband = bit.band(object_type, ObjectTypes.Unit)
+			local target_guid = UnitGUID(target)
+			local _,_,_,_,_,object_guid,_ = strsplit("-",UnitGUID(object))
+			if bitband > 0 then
+				if target_guid ~= object_guid then
+					local distance = GetDistance(target, object)
+					local ccd_unit = SpecialAurasCheck(object)
 
-			if distance <= splash_radius and ccd_unit then
-				return true
+					if distance <= splash_radius and not ccd_unit then
+						return true
+					end
+				end
 			end
 		end
 	end
@@ -324,6 +340,10 @@ ProbablyEngine.condition.register("versatility.proc", function(target, spell)
 	end
 end)
 
+ProbablyEngine.condition.register("power.regen", function(target)
+	return select(2, GetPowerRegen(target))
+end)
+
 ProbablyEngine.condition.register("spell.regen", function(target, spell)
 	local name, rank, icon, cast_time, min_range, max_range = GetSpellInfo(spell)
 	if cast_time == 0 then
@@ -334,6 +354,63 @@ ProbablyEngine.condition.register("spell.regen", function(target, spell)
 
 	return cast_time_in_seconds * cur_regen
 end)
+
+ProbablyEngine.condition.register("gcd", function(target)
+	local gcd = (1.5/GetHaste(target))
+	if gcd < 1 then
+		return 1
+	else
+		return gcd
+	end
+end)
+
+ProbablyEngine.condition.register("cluster", function(target, radius)
+	local ground = target
+	local radius = tonumber(radius)
+	local cluster_target = nil
+	local largest_cluster = 0
+	local units_in_cluster = 0
+
+	if ProbablyEngine.module.player.casting == true then
+		return false
+	end
+	for i=1, #CACHEUNITSTABLE do
+		local distance = GetDistance("player", CACHEUNITSTABLE[i].key)
+
+		if distance <= 40 then
+			local units_in_cluster = 0
+
+			for j=1, #CACHEUNITSTABLE do
+				local cluster_distance = GetDistance(CACHEUNITSTABLE[i].key, CACHEUNITSTABLE[j].key)
+
+				if cluster_distance <= radius then
+					units_in_cluster = units_in_cluster + 1
+				end
+			end
+			if units_in_cluster >= largest_cluster then
+				largest_cluster = units_in_cluster
+				cluster_target = i
+			end
+		end
+	end
+	if cluster_target ~= nil then
+		LIBDRAWPARSEDTARGET = CACHEUNITSTABLE[cluster_target].key
+		if ground == "ground" then
+			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target].key..".ground"
+			return true
+		else
+			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target].key
+			return true
+		end
+	end
+	return false
+
+end)
+
+
+
+
+
 
 
 
@@ -736,19 +813,20 @@ function CacheEnemyUnits()
 				local _, special_aura_target = pcall(SpecialAurasCheck, object)
 				local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
 				local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-				--local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
+				local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
 
 				if bitband > 0 then
 					if distance <= 40 then
 						if object_health > 0 then
-							--if reaction and reaction <= 4 and (unit_affecting_combat or special_enemy_target) then
-							if reaction and reaction <= 4 and (tapped_by_me or tapped_by_all or special_enemy_target) then
-								if CACHEUNITSALGORITHM == "lowest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
-								elseif CACHEUNITSALGORITHM == "nearest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+							if reaction and reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
+								if tapped_by_me or tapped_by_all then
+									if CACHEUNITSALGORITHM == "lowest" then
+										CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
+										table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+									elseif CACHEUNITSALGORITHM == "nearest" then
+										CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
+										table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+									end
 								end
 							end
 						end

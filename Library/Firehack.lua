@@ -79,20 +79,20 @@ function ProbablyEngine.protected.FireHack()
 						local _, special_aura_target = pcall(SpecialAurasCheck, object)
 						local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
 						local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-						--if reaction and reaction <= 4 and not special_aura_target and (ignoreCombat or combat or special_enemy_target) then
-						if reaction and reaction <= 4 and (ignoreCombat or tapped_by_me or tapped_by_all or special_enemy_target) then
-							if Distance(object, unit) <= distance then
-								total = total + 1
+						if reaction and reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
+							if tapped_by_me or tapped_by_all then
+								if Distance(object, unit) <= distance then
+									total = total + 1
+								end
 							end
 						end
 					end
 				end
 				uau_cache_count[unit..distance..tostring(ignoreCombat)] = total
 				uau_cache_time[unit..distance..tostring(ignoreCombat)] = GetTime()
-				DEBUG(1, "Total Enemies ("..total..")")
+				DEBUG(2, "Total Enemies ("..total..")")
 				return total
 			else
-				DEBUG(1, "Total Enemies (0)")
 				return 0
 			end
 		end
@@ -172,6 +172,9 @@ function ProbablyEngine.protected.FireHack()
 		end
 
 		function CastGround(spell, target)
+			if string.sub(target, 0, 2) == "0x" then
+				target = tostring(target)
+			end
 			if UnitExists(target) then
 				local _, x1, y1, z1 = pcall(ObjectPosition, target)
 				CastSpellByName(spell)
