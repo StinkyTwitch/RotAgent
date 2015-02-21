@@ -7,8 +7,12 @@
 --]]------------------------------------------------------------------------------------------------
 local addonName = ...
 local addonVersion = GetAddOnMetadata(addonName, "Version")
+local ToggleVisualHelpers = false
 local LibDraw = LibStub("LibDraw-1.0")
 
+function ToggleVisualHelpers()
+	ToggleVisualHelpers = not ToggleVisualHelpers
+end
 
 
 
@@ -17,7 +21,7 @@ local LibDraw = LibStub("LibDraw-1.0")
 LIBDRAW SYNC
 --------------------------------------------------------------------------------------------------]]
 LibDraw.Sync(function()
-	if FireHack then
+	if FireHack and ToggleVisualHelpers then
 		if ProbablyEngine.module.player.combat then
 			if ProbablyEngine.module.player.specID == 253
 				or ProbablyEngine.module.player.specID == 254

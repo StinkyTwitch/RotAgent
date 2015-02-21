@@ -132,8 +132,24 @@ local mouseover = {
 	{ s.FreezingTrap1, { "!player.buff("..s.TrapLauncher..")", "modifier.lcontrol", }, },
 	{ s.FreezingTrap2, { "player.buff("..s.TrapLauncher..")", "modifier.lcontrol", }, "mouseover.ground", },
 	-- SERPENT STING (checks: No Debuff, Not Immune, Enemies Around Target)
-	{ s.MultiShot, { "toggle.mouseovers", "!modifier.lcontrol", "modifier.multitarget", "!mouseover.debuff("..s.SerpentSting..")", "!mouseover.cc", "!mouseover.ccinarea(8)", "mouseover.area(8).enemies > 1", }, "mouseover", },
-	{ s.ArcaneShot, { "toggle.mouseovers", "!modifier.lcontrol", "!mouseover.debuff("..s.SerpentSting..")", "!mouseover.cc", }, "mouseover", },
+	{ s.MultiShot, {
+		"toggle.mouseovers",
+		"!modifier.lcontrol",
+		"modifier.multitarget",
+		"!mouseover.debuff("..s.SerpentSting..")",
+		"!mouseover.cc", "!mouseover.ccinarea(8)",
+		"mouseover.area(8).enemies > 1",
+		"mouseover.alive",
+		"mouseover.enemy",
+	}, "mouseover", },
+	{ s.ArcaneShot, {
+		"toggle.mouseovers",
+		"!modifier.lcontrol",
+		"!mouseover.debuff("..s.SerpentSting..")",
+		"!mouseover.cc",
+		"mouseover.alive",
+		"mouseover.enemy",
+	}, "mouseover", },
 	-- FORCE SERPENT STING
 	{ s.MultiShot, { "toggle.mouseovers", "modifier.ralt", "modifier.multitarget", "!mouseover.debuff("..s.SerpentSting..")", "mouseover.area(8).enemies > 1", }, "mouseover", },
 	{ s.ArcaneShot, { "toggle.mouseovers", "modifier.ralt", "!mouseover.debuff("..s.SerpentSting..")", }, "mouseover", },
@@ -333,6 +349,7 @@ local combat = {
 		--actions.aoe+=/explosive_trap,if=dot.explosive_trap.remains<=5
 		{ s.ExplosiveTrap1, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "!player.buff("..s.TrapLauncher..")", "!player.ccinarea(10)", }, },
 		{ s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", "ground.cluster(10)", }, },
+		--{ s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "ground.cluster(10)", }, },
 
 		--------------------------------------------------------------------------------------------
 		--actions.aoe+=/a_murder_of_crows
@@ -452,7 +469,8 @@ local combat = {
 	------------------------------------------------------------------------------------------------
 	--actions+=/explosive_trap
 	--{ s.ExplosiveTrap1, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "!player.buff("..s.TrapLauncher..")", "!player.ccinarea(10)", }, },
-	{ s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", }, "target.ground", },
+	--{ s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", "!target.ccinarea(10)", }, "target.ground", },
+	{ s.ExplosiveTrap2, { "player.spell("..s.ExplosiveTrap2..").cooldown = 0", "player.buff("..s.TrapLauncher..")", }, "target.ground", },
 
 	------------------------------------------------------------------------------------------------
 	--# Cast a second shot for steady focus if that won't cap us.
@@ -556,7 +574,7 @@ function()
 				-- Run ONLY if the Rotation is toggled ON
 				PrimaryStatsTableUpdate()
 				SecondaryStatsTableUpdate()
-				if FireHack then
+				if FireHack or oexecute then
 					CurrentTargetTableInfo("target")
 				end
 				-- Run ONLY if in Combat

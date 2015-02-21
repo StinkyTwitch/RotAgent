@@ -32,26 +32,32 @@ end
 
 -- Verify Vector
 function VerifyDisengage(vector)
-    local _, current_vector = pcall(ObjectFacing, "player")
+    if FireHack then
+        local _, player_facing = pcall(ObjectFacing, "player")
 
-    if current_vector ~= vector then
-        FaceDirection(vector)
-        CastSpellByName("Disengage")
-    else
-        CastSpellByName("Disengage")
+        if player_facing ~= vector then
+            FaceDirection(vector)
+            CastSpellByName("Disengage")
+        else
+            CastSpellByName("Disengage")
+        end
     end
 end
 
 -- Disengage Forward
 function DisengageForward()
-    local _, initial_vector = pcall(ObjectFacing, "player")
-    local disengage_vector = (mod( initial_vector + math.pi, math.pi * 2 ))
+    if FireHack then
+        local _, initial_vector = pcall(ObjectFacing, "player")
+        local disengage_vector = (mod( initial_vector + math.pi, math.pi * 2 ))
 
-    C_Timer.After(.001, function() FaceDirection(disengage_vector) end)
-    C_Timer.After(.35, function() VerifyDisengage(disengage_vector) end)
-    C_Timer.After(.50, function () FaceDirection(initial_vector) end)
+        C_Timer.After(.001, function() FaceDirection(disengage_vector) end)
+        C_Timer.After(.35, function() VerifyDisengage(disengage_vector) end)
+        C_Timer.After(.50, function () FaceDirection(initial_vector) end)
 
-    DEBUG(1, "Jump: "..initial_vector..", "..disengage_vector.."")
+        DEBUG(1, "Jump: "..initial_vector..", "..disengage_vector.."")
+    else
+        DEBUG(1, "Hunter Jump not supported.")
+    end
 end
 
 

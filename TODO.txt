@@ -2,3 +2,9 @@
 **Priority**
 * Look into adding another bit.band check to filter out corpses.
   * That would mean testing if dead NPC's ObjectTypes return Unit and Corpse
+
+
+**Suggestions**
+* Svs
+  * Add Aspect of the Cheetah toggles for ooc and ic
+  * Toggles for the use of Mult-Shot on mouseover logic
