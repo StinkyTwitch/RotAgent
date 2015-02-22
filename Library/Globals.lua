@@ -15,6 +15,7 @@ local deathTrack = { }
 --[[------------------------------------------------------------------------------------------------
 GLOBAL TABLES/VARIABLES
 --------------------------------------------------------------------------------------------------]]
+RotAgent = { }
 AUTOTARGETALGORITHM = "lowest"
 CACHEUNITSALGORITHM = "lowest"
 CACHEUNITSTABLE = {}
@@ -525,59 +526,59 @@ function CurrentTargetTableInfo(target)
 	end
 
 	if FireHack then
-	    local total_objects = ObjectCount()
+		local total_objects = ObjectCount()
 
-	    for i=1, total_objects do
-	        local _, object = pcall(ObjectWithIndex,i)
-	        local _, object_exists = pcall(ObjectExists,object)
+		for i=1, total_objects do
+			local _, object = pcall(ObjectWithIndex,i)
+			local _, object_exists = pcall(ObjectExists,object)
 
-	        if object_exists then
-	            local _, object_type = pcall(ObjectType,object)
-	            local bitband = bit.band(object_type, ObjectTypes.Unit)
-	            local _,_,_,_,_,object_guid,_ = strsplit("-",UnitGUID(object))
-	            if bitband > 0 then
-	                if object_guid == target then
-	                    target = object
-	                end
-	            end
-	        end
-	    end
-    elseif oexecute then
-    	local total_objects = ObjectsCount("player", 40)
+			if object_exists then
+				local _, object_type = pcall(ObjectType,object)
+				local bitband = bit.band(object_type, ObjectTypes.Unit)
+				local _,_,_,_,_,object_guid,_ = strsplit("-",UnitGUID(object))
+				if bitband > 0 then
+					if object_guid == target then
+						target = object
+					end
+				end
+			end
+		end
+	elseif oexecute then
+		local total_objects = ObjectsCount("player", 40)
 
-        for i=1, total_objects do
-            local _, object = pcall(ObjectByIndex,i)
-            local _, object_exists = pcall(UnitExists,object)
+		for i=1, total_objects do
+			local _, object = pcall(ObjectByIndex,i)
+			local _, object_exists = pcall(UnitExists,object)
 
-            if object_exists then
-                local _, object_type = pcall(ObjectDescriptorInt,object,0x20)
-                local bitband = bit.band(object_type,0x8)
-                local target_guid = UnitGUID(target)
-                local _, object_guid_string = pcall(UnitGUID, object)
-                local _,_,_,_,_,object_guid,_ = strsplit("-",object_guid_string)
+			if object_exists then
+				local _, object_type = pcall(ObjectDescriptorInt,object,0x20)
+				local bitband = bit.band(object_type,0x8)
+				local target_guid = UnitGUID(target)
+				local _, object_guid_string = pcall(UnitGUID, object)
+				local _,_,_,_,_,object_guid,_ = strsplit("-",object_guid_string)
 
-                if bitband > 0 then
+				if bitband > 0 then
 
-                    if target_guid ~= object_guid then
-                        local _, distance = pcall(GetDistance, target, object)
-                        local _, ccd_unit = pcall(SpecialAurasCheck, object)
-                    end
-                end
-            end
-        end
-    else
-    	for k in pairs(CURRENTTARGETINFOTABLE) do
+					if target_guid ~= object_guid then
+						local _, distance = pcall(GetDistance, target, object)
+						local _, ccd_unit = pcall(SpecialAurasCheck, object)
+					end
+				end
+			end
+		end
+	else
+		for k in pairs(CURRENTTARGETINFOTABLE) do
 			CURRENTTARGETINFOTABLE[k] = nil
 		end
-    end
+	end
 
-    if UnitExists(target) and (FireHack or oexecute) then
-        local target_guid = tostring(UnitGUID(target))
-        local target_name = tostring(UnitName(target))
-        local target_affecting_combat = tostring(UnitAffectingCombat(target))
-        local target_attackable = tostring(UnitCanAttack("player", target))
-        local target_can_attack_me = tostring(UnitCanAttack(target, "player"))
-        if FireHack then
+	if UnitExists(target) and (FireHack or oexecute) then
+		local target_guid = tostring(UnitGUID(target))
+		local target_name = tostring(UnitName(target))
+		local target_affecting_combat = tostring(UnitAffectingCombat(target))
+		local target_attackable = tostring(UnitCanAttack("player", target))
+		local target_can_attack_me = tostring(UnitCanAttack(target, "player"))
+		if FireHack then
 			local _, x1, y1, z1 = pcall(ObjectPosition, "player")
 			local _, x2, y2, z2 = pcall(ObjectPosition, target)
 			local target_distance = math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
@@ -586,38 +587,38 @@ function CurrentTargetTableInfo(target)
 			local _, x2, y2, z2,_ = pcall(UnitPosition, target)
 			local target_distance = math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
 		end
-        local target_health = UnitHealth(target)
-        local target_health_max = UnitHealthMax(target)
-        local target_health_percentage = math.floor((target_health / target_health_max) * 100)
-        local target_reaction = UnitReaction("player", target)
-        local target_special_aura = tostring(SpecialAurasCheck(target))
-        local target_special_target = tostring(SpecialEnemyTargetsCheck(target))
-        local target_tapped_by_me = tostring(UnitIsTappedByPlayer(target))
-        local target_tapped_by_all = tostring(UnitIsTappedByAllThreatList(target))
-        if FireHack then
-        	local target_combat_reach = UnitCombatReach(target)
-        elseif oexecute then
-        	local target_combat_reach = ObjectDescriptorFloat(object,0x18C)
-        end
-        local target_deathin = TimeToDeath(target)
+		local target_health = UnitHealth(target)
+		local target_health_max = UnitHealthMax(target)
+		local target_health_percentage = math.floor((target_health / target_health_max) * 100)
+		local target_reaction = UnitReaction("player", target)
+		local target_special_aura = tostring(SpecialAurasCheck(target))
+		local target_special_target = tostring(SpecialEnemyTargetsCheck(target))
+		local target_tapped_by_me = tostring(UnitIsTappedByPlayer(target))
+		local target_tapped_by_all = tostring(UnitIsTappedByAllThreatList(target))
+		if FireHack then
+			local target_combat_reach = UnitCombatReach(target)
+		elseif oexecute then
+			local target_combat_reach = ObjectDescriptorFloat(object,0x18C)
+		end
+		local target_deathin = TimeToDeath(target)
 
-        CURRENTTARGETINFOTABLE["guid"] = target_guid
-        CURRENTTARGETINFOTABLE["name"] = target_name
-        CURRENTTARGETINFOTABLE["distance"] = target_distance
-        CURRENTTARGETINFOTABLE["reach"] = target_combat_reach
-        CURRENTTARGETINFOTABLE["healthact"] = target_health
-        CURRENTTARGETINFOTABLE["healthmax"] = target_health_max
-        CURRENTTARGETINFOTABLE["healthpct"] = target_health_percentage
-        CURRENTTARGETINFOTABLE["combat"] = target_affecting_combat
-        CURRENTTARGETINFOTABLE["reaction"] = target_reaction
-        CURRENTTARGETINFOTABLE["specialaura"] = target_special_aura
-        CURRENTTARGETINFOTABLE["specialtarget"] = target_special_target
-        CURRENTTARGETINFOTABLE["tappedbyme"] = target_tapped_by_me
-        CURRENTTARGETINFOTABLE["tappedbyall"] = target_tapped_by_all
-        CURRENTTARGETINFOTABLE["attackp2t"] = target_attackable
-        CURRENTTARGETINFOTABLE["attackt2p"] = target_can_attack_me
-        CURRENTTARGETINFOTABLE["deathin"] = target_deathin
-    end
+		CURRENTTARGETINFOTABLE["guid"] = target_guid
+		CURRENTTARGETINFOTABLE["name"] = target_name
+		CURRENTTARGETINFOTABLE["distance"] = target_distance
+		CURRENTTARGETINFOTABLE["reach"] = target_combat_reach
+		CURRENTTARGETINFOTABLE["healthact"] = target_health
+		CURRENTTARGETINFOTABLE["healthmax"] = target_health_max
+		CURRENTTARGETINFOTABLE["healthpct"] = target_health_percentage
+		CURRENTTARGETINFOTABLE["combat"] = target_affecting_combat
+		CURRENTTARGETINFOTABLE["reaction"] = target_reaction
+		CURRENTTARGETINFOTABLE["specialaura"] = target_special_aura
+		CURRENTTARGETINFOTABLE["specialtarget"] = target_special_target
+		CURRENTTARGETINFOTABLE["tappedbyme"] = target_tapped_by_me
+		CURRENTTARGETINFOTABLE["tappedbyall"] = target_tapped_by_all
+		CURRENTTARGETINFOTABLE["attackp2t"] = target_attackable
+		CURRENTTARGETINFOTABLE["attackt2p"] = target_can_attack_me
+		CURRENTTARGETINFOTABLE["deathin"] = target_deathin
+	end
 end
 
 function CurrentTargetTableShow()
@@ -834,31 +835,31 @@ function TargetIsInFrontCheck(debuglevel, unit)
 end
 
 function TimeToDeath(target)
-    local guid = UnitGUID(target)
-    if deathTrack[target] and deathTrack[target].guid == guid then
-        local start = deathTrack[target].time
-        local currentHP = UnitHealth(target)
-        local maxHP = deathTrack[target].start
-        local diff = maxHP - currentHP
-        local dura = GetTime() - start
-        local hpps = diff / dura
-        local death = currentHP / hpps
-        if death == math.huge then
-            return 8675309
-        elseif death < 0 then
-            return 0
-        else
-            return death
-        end
-    elseif deathTrack[target] then
-        table.empty(deathTrack[target])
-    else
-        deathTrack[target] = { }
-    end
-    deathTrack[target].guid = guid
-    deathTrack[target].time = GetTime()
-    deathTrack[target].start = UnitHealth(target)
-    return 8675309
+	local guid = UnitGUID(target)
+	if deathTrack[target] and deathTrack[target].guid == guid then
+		local start = deathTrack[target].time
+		local currentHP = UnitHealth(target)
+		local maxHP = deathTrack[target].start
+		local diff = maxHP - currentHP
+		local dura = GetTime() - start
+		local hpps = diff / dura
+		local death = currentHP / hpps
+		if death == math.huge then
+			return 8675309
+		elseif death < 0 then
+			return 0
+		else
+			return death
+		end
+	elseif deathTrack[target] then
+		table.empty(deathTrack[target])
+	else
+		deathTrack[target] = { }
+	end
+	deathTrack[target].guid = guid
+	deathTrack[target].time = GetTime()
+	deathTrack[target].start = UnitHealth(target)
+	return 8675309
 end
 
 
@@ -882,11 +883,9 @@ function CacheEnemyUnits()
 	-- FIREHACK
 	if FireHack then
 		local total_objects = ObjectCount()
-
 		for i=1, total_objects do
 			local _, object = pcall(ObjectWithIndex, i)
 			local _, object_exists = pcall(ObjectExists, object)
-
 			if object_exists then
 				local _, object_type = pcall(ObjectType, object)
 				local bitband = bit.band(object_type, ObjectTypes.Unit)
@@ -906,12 +905,10 @@ function CacheEnemyUnits()
 				local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
 				local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
 				local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
-
 				if bitband > 0 then
 					if distance <= 40 then
 						if object_health > 0 then
-							if reaction	and reaction <= 4
-								and not special_aura_target
+							if reaction	and reaction <= 4 and not special_aura_target
 								and (tapped_by_me or tapped_by_all or special_enemy_target)
 							then
 								if CACHEUNITSALGORITHM == "lowest" then
@@ -930,31 +927,44 @@ function CacheEnemyUnits()
 	end
 	-- OFFSPRING
 	if oexecute then
-		local totalObjects = ObjectsCount("player", 40)
-
-		for i = 1, totalObjects do
-			local _, object, id, name, bounding, x, y, z, facing, summoned_by_me, created_by_me, combat, target = pcall(ObjectByIndex, i)
-			local _, object_exists = pcall(ObjectExists, object)
-
+		local total_objects = ObjectsCount("player", 40)
+		for i=1, total_objects do
+			local _, object = pcall(ObjectByIndex,i)
+			local _, object_exists = pcall(UnitExists,object)
 			if object_exists then
-				local _, object_attackable = pcall(UnitCanAttack, "player", object)
-				local _, object_is_player = pcall(UnitIsPlayer, object)
-				local _, object_is_player_pet = pcall(UnitIsOtherPlayersPet, object)
+				local _, object_type = pcall(ObjectDescriptorInt,object,0x20)
+				local bitband = bit.band(object_type,0x8)
+				local _, target_guid_string = pcall(UnitGUID, target)
+				local _, object_guid_string = pcall(UnitGUID, object)
+				local _,_,_,_,_,target_guid,_ = strsplit("-",target_guid_string)
+				local _,_,_,_,_,object_guid,_ = strsplit("-",object_guid_string)
+				local _, x1, y1, z1,_ = pcall(UnitPosition, "player")
+				local _, x2, y2, z2,_ = pcall(UnitPosition, object)
+				local distance = math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
 				local _, object_health = pcall(UnitHealth, object)
 				local _, object_health_max = pcall(UnitHealthMax, object)
 				local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-				local _, object_reaction = pcall(UnitReaction, "player", object)
-				local _, special_target = pcall(SpecialTargetCheck, object)
+				local _, object_name = pcall(UnitName, object)
+				local _, reaction = pcall(UnitReaction, "player", object)
+				local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
+				local _, special_aura_target = pcall(SpecialAurasCheck, object)
+				local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
+				local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
 				local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
-
-				if object_attackable and object_health > 0 and not object_is_player and not object_is_player_pet then
-					if object_reaction and object_reaction <= 4 and not special_aura_target and (unit_affecting_combat or special_enemy_target) then
-						if CACHEUNITSALGORITHM == "nearest" then
-							CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object_text, value = distance}
-							table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
-						elseif CACHEUNITSALGORITHM == "lowest" then
-							CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object_text, value = object_health_percentage}
-							table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+				if bitband > 0 then
+					if distance <= 40 then
+						if object_health > 0 then
+							if reaction	and reaction <= 4 and not special_aura_target
+								and (tapped_by_me or tapped_by_all or special_enemy_target)
+							then
+								if CACHEUNITSALGORITHM == "lowest" then
+									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
+									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+								elseif CACHEUNITSALGORITHM == "nearest" then
+									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
+									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+								end
+							end
 						end
 					end
 				end

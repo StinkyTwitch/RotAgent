@@ -8,12 +8,38 @@
     !IN OTHER WORDS FUCK OFF SOAPBOX!
 --]]------------------------------------------------------------------------------------------------
 
+local function onUpdate(mtsSplash,elapsed)
+    if mtsSplash.time < GetTime() - 20.0 then
+        if mtsSplash:GetAlpha() then
+            mtsSplash:Hide()
+        else
+            mtsSplash:SetAlpha(mtsSplash:GetAlpha() - .05)
+        end
+    end
+end
+function RotAgent.Splash()
+    mtsSplash:SetAlpha(1)
+    mtsSplash.time = GetTime()
+    mtsSplash:Show()
+end
+mtsSplash = CreateFrame("Frame", nil,UIParent)
+mtsSplash:SetPoint("CENTER",UIParent)
+mtsSplash:SetWidth(512)
+mtsSplash:SetHeight(512)
+mtsSplash:SetBackdrop({ bgFile = "Interface\\AddOns\\RotAgent\\Library\\Media\\splash.tga" })
+mtsSplash:SetScript("OnUpdate",onUpdate)
+mtsSplash:Hide()
+mtsSplash.time = 0
+
+
 local TargetTable = {
     key = "targettablekey",
-    title = "Target Information",
+    title = 'RotAgent',
+    subtitle = 'Target Information',
     width = 200,
     height = 265,
     resize = true,
+    color = "6d6c2c",
     config = {
         --{ type = "text", text = "\124cffFFFFFFguid", size = 12, offset = 0 },
         { key = 'guid', type = "text", text = "random", size = 12, align = "left", offset = 14 },

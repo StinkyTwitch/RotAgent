@@ -13,6 +13,28 @@ local function dynamicEval(condition, spell)
 	return ProbablyEngine.dsl.parse(condition, spell or '')
 end
 
+local function config(key, default)
+	return ProbablyEngine.interface.fetchKey('rotagentsurvival', key, default)
+end
+
+--[[
+local function hplt(key, dflt)
+	return ProbablyEngine.condition['health']('player') < conf(key, dflt)
+end
+
+local function hpgt(key, dflt)
+	return ProbablyEngine.condition['health']('player') >= conf(key, dflt)
+end
+
+local function hpslt(key, sp, ch)
+	return ProbablyEngine.condition['health']('player') < conf(key..'_spin', sp) and conf(key..'_check', ch)
+end
+
+local function seal(s)
+	return GetShapeshiftForm() ~= s and conf('seal', 3) == s
+end
+]]
+
 local s = {
 	-- CORE
 	ArcaneShot = "3044",
@@ -105,6 +127,11 @@ local s = {
 	PetAttack = "/petattack",
 	PetDash = "/cast Dash",
 }
+local bosshelp = {
+	-- BOSS DEBUFFS
+	{ s.ExtraActionButton, { "player.buff("..s.Flamethrower..")", }, },
+	{ s.FeignDeath, { "player.debuff("..s.InfestingSpores..").count >= 6", }, },
+}
 local defensive = {
 	{ s.HealthStone, { "player.health < 40", }, },
 	{ s.Deterrence, { "player.health <= 10", }, },
@@ -113,9 +140,6 @@ local defensive = {
 	{ s.MastersCall, { "pet.exists", "player.state.stun", }, },
 	{ s.MastersCall, { "pet.exists", "player.state.root", }, },
 	{ s.MastersCall, { "pet.exists", "player.state.snare", "!player.debuff("..s.Dazed..")", }, },
-	-- BOSS DEBUFFS
-	{ s.ExtraActionButton, { "player.buff("..s.Flamethrower..")", }, },
-	{ s.FeignDeath, { "player.debuff("..s.InfestingSpores..").count >= 6", }, },
 }
 local interrupt = {
 	{ s.CounterShot, { "target.interruptAt(75)", "modifier.interrupts", "!player.casting", }, "target", },
@@ -513,6 +537,7 @@ ProbablyEngine.rotation.register_custom(255, "RotAgent - SurvivalTest",
 	{ opener2, { "target.area(10).enemies >= 2", "modifier.multitarget", "player.time < 4", }, },
 	{ opener, { "player.time < 4", }, },
 
+	{ bosshelp },
 	{ defensive },
 	{ interrupt },
 	{ mouseover },
@@ -532,6 +557,53 @@ ProbablyEngine.rotation.register_custom(255, "RotAgent - SurvivalTest",
 },
 
 function()
+	RotAgent.Splash()
+	-- create the UI
+	local rotagentsurvival_ui = ProbablyEngine.interface.buildGUI({
+		key = 'rotagentsurvival',
+		title = 'RotAgent',
+		subtitle = 'Survival Hunter',
+		profiles = true,
+		width = 250,
+		height = 550,
+		color = "ABD473",
+		config = {
+			{ type = 'header', text = 'Mouseovers' },
+			{ type = 'checkbox', key = 'as_mouseover', text = 'Arcane Shot to Serpent Sting', default = true, },
+			{ type = 'checkbox', key = 'ms_mouseover', text = 'Multi-Shot to Serpent Sting AoE', default = true, },
+			{ type = 'checkbox', key = 'ft_mouseover', text = 'Freezing Trap at mouseover' , default = true, },
+			{ type = 'dropdown', key = 'ft_keybind', text = 'Freezing Trap Keybind', list = {
+				{ key = 'might', text = 'lalt' },
+				{ key = 'kings', text = 'lcontrol' },
+				{ key = 'might', text = 'lshift' },
+			}, default = 'lcontrol' },
+			{ type = 'rule' },
+			{ type = 'header', text = 'Boss Help' },
+			{ type = 'checkbox', key = 'brackflamethrower', text = 'Auto turn off flamethrower on Brackenspore', default = true },
+			{ type = 'checkspin', key = 'fdinfestingsporestacks', text = 'Feign Death Infesting Spores |cffaaaaaastack >|r', default_check = true, default_spin = 6, },
+			{ type = 'rule' },
+			{ type = 'header', text = 'Abilities' },
+			{ type = 'checkbox', key = 'autoaspect', text = 'Auto Aspect of the Cheetah', default = true },
+			{ type = 'rule' },
+			{ type = 'header', text = 'Defensives' },
+			{ type = 'checkspin', key = 'healthstone', text = 'Health Stone |cffaaaaaaHP < %|r', default_check = true, default_spin = 40, },
+			{ type = 'checkspin', key = 'deterrence', text = 'Deterrence |cffaaaaaaHP < %|r', default_check = true, default_spin = 10 },
+			{ type = 'checkbox', key = 'masterscall', text = 'Masters Call disorient, root, snare, stun', default = true },
+			{ type = 'rule' },
+			{ type = 'header', text = 'Extra' },
+			{ type = 'checkbox', key = 'autolfg', text = 'Auto LGF Accept', default = false },
+		}
+	})
+	rotagentsurvival_ui.parent:Hide()
+
+	ProbablyEngine.buttons.create(
+		'config', 'Interface\\ICONS\\Inv_misc_gear_01',
+		function(self)
+			self.checked = false
+			ProbablyEngine.buttons.setInactive('config')
+			rotagentsurvival_ui.parent:Show()
+		end,
+		'Configure', 'Change how the rotation behaves.')
 	ProbablyEngine.toggle.create(
 		'autotarget', 'Interface\\Icons\\ability_hunter_snipershot',
 		'Auto Target', 'Automatically target the nearest enemy when target dies or does not exist'

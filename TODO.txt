@@ -1,7 +1,12 @@
 
 **Priority**
+* Config GUI NOW!!!
+  * NEED this 1st and foremost
+
 * Look into adding another bit.band check to filter out corpses.
   * That would mean testing if dead NPC's ObjectTypes return Unit and Corpse
+* Use NOCARRIER's combat log UnitsAroundUnit to build a non FH/OS cache manager
+* Add health potion to defensives
 
 
 **Suggestions**
