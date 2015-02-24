@@ -845,11 +845,12 @@ function()
 
 				if FireHack or oexecute then
 					CurrentTargetTableInfo("target")
+					CacheEnemyUnits()
 				end
 
 				-- Run ONLY if in Combat
 				if ProbablyEngine.module.player.combat then
-					CacheEnemyUnits()
+
 					--if ProbablyEngine.config.read('button_states', 'autotarget', false) then
 					if conf('autotarget', true) then
 						AutoTargetEnemy()

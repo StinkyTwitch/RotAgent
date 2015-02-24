@@ -51,6 +51,7 @@ function ProbablyEngine.protected.FireHack()
 
 		function Distance(a, b)
 			if UnitExists(a) and UnitIsVisible(a) and UnitExists(b) and UnitIsVisible(b) then
+				--print(a,b)
 				local _, ax, ay, az = pcall(ObjectPosition, a)
 				local _, bx, by, bz = pcall(ObjectPosition, b)
 				return math.sqrt(((bx-ax)^2) + ((by-ay)^2) + ((bz-az)^2)) - ((UnitCombatReach(a)) + (UnitCombatReach(b)))

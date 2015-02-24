@@ -414,13 +414,13 @@ ProbablyEngine.condition.register("cluster", function(target, radius)
 		return false
 	end
 	for i=1, #CACHEUNITSTABLE do
-		local _, distance = pcall(GetDistance, "player", CACHEUNITSTABLE[i].key)
+		local _, distance = pcall(GetDistance, "player", CACHEUNITSTABLE[i][1])
 
 		if distance <= 40 then
 			local units_in_cluster = 0
 
 			for j=1, #CACHEUNITSTABLE do
-				local _, cluster_distance = pcall(GetDistance, CACHEUNITSTABLE[i].key, CACHEUNITSTABLE[j].key)
+				local _, cluster_distance = pcall(GetDistance, CACHEUNITSTABLE[i][1], CACHEUNITSTABLE[j][1])
 
 				if cluster_distance <= radius then
 					units_in_cluster = units_in_cluster + 1
@@ -435,10 +435,10 @@ ProbablyEngine.condition.register("cluster", function(target, radius)
 	if cluster_target ~= nil then
 		LIBDRAWPARSEDTARGET = CACHEUNITSTABLE[cluster_target].key
 		if ground == "ground" then
-			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target].key..".ground"
+			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target][1]..".ground"
 			return true
 		else
-			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target].key
+			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target][1]
 			return true
 		end
 	end
@@ -470,14 +470,14 @@ function AutoTargetEnemy()
 
 	if AUTOTARGETALGORITHM == "lowest" or AUTOTARGETALGORITHM == "nearest" then
 		for i=1, #CACHEUNITSTABLE do
-			local object_exists = pcall(UnitExists, CACHEUNITSTABLE[i].key)
-			local object_attackable = pcall(UnitCanAttack, "player", CACHEUNITSTABLE[i].key)
+			local object_exists = pcall(UnitExists, CACHEUNITSTABLE[i][1])
+			local object_attackable = pcall(UnitCanAttack, "player", CACHEUNITSTABLE[i][1])
 
 			if object_exists then
-				if not TargetIsImmuneCheck(1, CACHEUNITSTABLE[i].key) then
-					if TargetIsInFrontCheck(1, CACHEUNITSTABLE[i].key) then
+				if not TargetIsImmuneCheck(1, CACHEUNITSTABLE[i][1]) then
+					if TargetIsInFrontCheck(1, CACHEUNITSTABLE[i][1]) then
 						if object_attackable then
-							return TargetUnit(CACHEUNITSTABLE[i].key)
+							return TargetUnit(CACHEUNITSTABLE[i][1])
 						end
 					end
 				end
@@ -485,21 +485,21 @@ function AutoTargetEnemy()
 		end
 	else
 		for i=1, #CACHEUNITSTABLE do
-			if GetRaidTargetIndex("..CACHEUNITSTABLE[i].key..") == 8 then
-				return TargetUnit(CACHEUNITSTABLE[i].key)
+			if GetRaidTargetIndex(CACHEUNITSTABLE[i][1]) == 8 then
+				return TargetUnit(CACHEUNITSTABLE[i][1])
 			end
 		end
 		if UnitExists("focustarget") then
 			return TargetUnit("focustarget")
 		else
 			for i=1, #CACHEUNITSTABLE do
-				local object_exists = pcall(UnitExists, CACHEUNITSTABLE[i].key)
+				local object_exists = pcall(UnitExists, CACHEUNITSTABLE[i][1])
 
 				if object_exists then
-					if not TargetIsImmuneCheck(1, CACHEUNITSTABLE[i].key) then
-						if TargetIsInFrontCheck(1, CACHEUNITSTABLE[i].key) then
-							if UnitCanAttack("player", CACHEUNITSTABLE[i].key) then
-								return TargetUnit(CACHEUNITSTABLE[i].key)
+					if not TargetIsImmuneCheck(1, CACHEUNITSTABLE[i][1]) then
+						if TargetIsInFrontCheck(1, CACHEUNITSTABLE[i][1]) then
+							if UnitCanAttack("player", CACHEUNITSTABLE[i][1]) then
+								return TargetUnit(CACHEUNITSTABLE[i][1])
 							end
 						end
 					end
@@ -646,7 +646,7 @@ function GetCombatReach(unit)
 end
 
 function GetDistance(unit1, unit2)
-	local unit1, unit2 = a, unit2
+	local unit1, unit2 = unit1, unit2
 	local _, unit1_exists = pcall(UnitExists, unit1)
 	local _, unit2_exists = pcall(UnitExists, unit2)
 	local _, unit1_visible = pcall(UnitIsVisible, unit1)
@@ -656,7 +656,7 @@ function GetDistance(unit1, unit2)
 		if FireHack then
 			local _, x1, y1, z1 = pcall(ObjectPosition, unit1)
 			local _, x2, y2, z2 = pcall(ObjectPosition, unit2)
-			return math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
+			return GetRound(math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2)), 2)
 		elseif oexecute then
 			local _, x1, y1, z1,_ = pcall(UnitPosition, unit1)
 			local _, x2, y2, z2,_ = pcall(UnitPosition, unit2)
@@ -665,7 +665,7 @@ function GetDistance(unit1, unit2)
 			return 0
 		end
 	end
-	return 0
+	return 1
 end
 
 function GetRound(value, precision)
@@ -885,14 +885,67 @@ end
 OBJECT MANAGER
 --------------------------------------------------------------------------------------------------]]
 function CacheEnemyUnits()
+
 	wipe(CACHEUNITSTABLE)
-	--[[
-	for k in pairs(CACHEUNITSTABLE) do
-		CACHEUNITSTABLE[k] = nil
-	end
-	]]
 
 	-- FIREHACK
+	if FireHack and ProbablyEngine.module.player.combat then
+		local loop_count = 0
+		local total_objects = ObjectCount()
+
+		for i=1, total_objects do
+			local _, object = pcall(ObjectWithIndex, i)
+			local _, object_exists = pcall(ObjectExists, object)
+
+			if object_exists then
+				local _, object_type = pcall(ObjectType, object)
+				local bitband = bit.band(object_type, ObjectTypes.Unit)
+
+				if bitband > 0 then
+					--local object_distance = GetRound(Distance("player", object), 2)
+					--print(type("player"),type(object))
+					--local object_distance = Distance("player", object)
+					local object_distance = GetDistance("player", object)
+					--local object_distance = 1
+
+					if object_distance <= 40 then
+						local _, object_health = pcall(UnitHealth, object)
+
+						if object_health > 0 then
+							local _, object_health_max = pcall(UnitHealthMax, object)
+							local object_health_percentage = math.floor((object_health / object_health_max) * 100)
+							local _, object_name = pcall(UnitName, object)
+							local _, reaction = pcall(UnitReaction, "player", object)
+							local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
+							local _, special_aura_target = pcall(SpecialAurasCheck, object)
+							local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
+							local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
+							local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
+
+							if reaction	and reaction <= 4 and not special_aura_target
+								and (tapped_by_me or tapped_by_all or special_enemy_target)
+							then
+								loop_count = loop_count + 1
+								CACHEUNITSTABLE[loop_count] = { }
+								CACHEUNITSTABLE[loop_count][1] = object
+								CACHEUNITSTABLE[loop_count][2] = object_name
+								CACHEUNITSTABLE[loop_count][3] = object_health_percentage
+								CACHEUNITSTABLE[loop_count][4] = object_distance
+
+								if CACHEUNITSALGORITHM == "lowest" then
+									table.sort(CACHEUNITSTABLE, function(a,b) return a[3] < b[3] end)
+								elseif CACHEUNITSALGORITHM == "nearest" then
+									table.sort(CACHEUNITSTABLE, function(a,b) return a[4] < b[4] end)
+								end
+
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	--[[
 	if FireHack then
 		local total_objects = ObjectCount()
 		for i=1, total_objects do
@@ -937,6 +990,7 @@ function CacheEnemyUnits()
 			end
 		end
 	end
+	]]
 	-- OFFSPRING
 	if oexecute then
 		local total_objects = ObjectsCount("player", 40)
