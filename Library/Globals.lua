@@ -433,7 +433,7 @@ ProbablyEngine.condition.register("cluster", function(target, radius)
 		end
 	end
 	if cluster_target ~= nil then
-		LIBDRAWPARSEDTARGET = CACHEUNITSTABLE[cluster_target].key
+		LIBDRAWPARSEDTARGET = CACHEUNITSTABLE[cluster_target][1]
 		if ground == "ground" then
 			ProbablyEngine.dsl.parsedTarget = CACHEUNITSTABLE[cluster_target][1]..".ground"
 			return true

@@ -12,6 +12,11 @@ local LibDraw = LibStub("LibDraw-1.0")
 
 function VisualNotificationsToggle()
 	visualnotifications = not visualnotifications
+	if visualnotifications then
+		print("Visual Notifications ON!")
+	else
+		print("Visual Notifications OFF!")
+	end
 end
 
 
@@ -27,17 +32,17 @@ LibDraw.Sync(function()
 				or ProbablyEngine.module.player.specID == 254
 				or ProbablyEngine.module.player.specID == 255
 			then
-				for index=1, #CACHEUNITSTABLE do
-					local _, serpent_stung = pcall(UnitDebuff, CACHEUNITSTABLE[index].key, "Serpent Sting")
-					local _, unit_exists = pcall(UnitExists, CACHEUNITSTABLE[index].key)
+				for i=1, #CACHEUNITSTABLE do
+					local _, serpent_stung = pcall(UnitDebuff, CACHEUNITSTABLE[i][1], "Serpent Sting")
+					local _, unit_exists = pcall(UnitExists, CACHEUNITSTABLE[i][1])
 					local dead = UnitIsDead("target")
 
 					if not serpent_stung and unit_exists and not dead then
 						LibDraw.SetColor(255, 0, 0, 255)
 						LibDraw.SetWidth(1)
 
-						local targetX, targetY, targetZ = ObjectPosition(CACHEUNITSTABLE[index].key)
-						local _, combat_reach = pcall(UnitCombatReach,CACHEUNITSTABLE[index].key)
+						local targetX, targetY, targetZ = ObjectPosition(CACHEUNITSTABLE[i][1])
+						local _, combat_reach = pcall(UnitCombatReach,CACHEUNITSTABLE[i][1])
 
 						LibDraw.Circle(targetX, targetY, targetZ, combat_reach)
 					end

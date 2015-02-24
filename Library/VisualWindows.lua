@@ -169,20 +169,6 @@ function LiveUnitCacheTableUpdate()
 		local unitcacheindexcount = table.getn(CACHEUNITSTABLE)
 		liveunitcachetable_gui.elements.unitcacheindextotal:SetText("\124cffFFFFFFUnit Count = \124cff666666"..unitcacheindexcount)
 
-		--local StoredStringArray = { }
-		--StoredStringArray = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 }
-
-		--[[
-		for i=1, 20 do
-
-		    StoredStringArray[i][1] = tostring(CACHEUNITSTABLE[i][1])
-		    StoredStringArray[i][2] = tostring(CACHEUNITSTABLE[i][2])
-		    StoredStringArray[i][3] = tostring(CACHEUNITSTABLE[i][3])
-		    StoredStringArray[i][4] = tostring(GetRound(CACHEUNITSTABLE[i][4], 2))
-
-		end
-		]]
-
 		if CACHEUNITSTABLE[1] ~= nil then
 		    liveunitcachetable_gui.elements.unitcacheindex1key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[1][1])
 		    liveunitcachetable_gui.elements.unitcacheindex1name:SetText("\124cff4e7300"..CACHEUNITSTABLE[1][2])
