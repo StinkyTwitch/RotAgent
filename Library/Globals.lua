@@ -902,7 +902,7 @@ function CacheEnemyUnits()
 				local bitband = bit.band(object_type, ObjectTypes.Unit)
 
 				if bitband > 0 then
-					local object_distance = Distance("player", object)
+					local object_distance = GetRound(Distance("player", object), 2)
 
 					if object_distance <= 40 then
 						local _, object_health = pcall(UnitHealth, object)
