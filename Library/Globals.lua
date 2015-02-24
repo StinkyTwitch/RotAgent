@@ -941,52 +941,6 @@ function CacheEnemyUnits()
 			end
 		end
 	end
-	--[[
-	if FireHack then
-		local total_objects = ObjectCount()
-		for i=1, total_objects do
-			local _, object = pcall(ObjectWithIndex, i)
-			local _, object_exists = pcall(ObjectExists, object)
-			if object_exists then
-				local _, object_type = pcall(ObjectType, object)
-				local bitband = bit.band(object_type, ObjectTypes.Unit)
-				local x1, y1, z1 = ObjectPosition("player")
-				local _, x2, y2, z2 = pcall(ObjectPosition, object)
-				local dx = x2 - x1
-				local dy = y2 - y1
-				local dz = z2 - z1
-				local object_distance = math.sqrt((dx*dx) + (dy*dy) + (dz*dz))
-				local _, object_health = pcall(UnitHealth, object)
-				local _, object_health_max = pcall(UnitHealthMax, object)
-				local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-				local _, object_name = pcall(UnitName, object)
-				local _, reaction = pcall(UnitReaction, "player", object)
-				local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-				local _, special_aura_target = pcall(SpecialAurasCheck, object)
-				local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
-				local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-				local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
-				if bitband > 0 then
-					if object_distance <= 40 then
-						if object_health > 0 then
-							if reaction	and reaction <= 4 and not special_aura_target
-								and (tapped_by_me or tapped_by_all or special_enemy_target)
-							then
-								if CACHEUNITSALGORITHM == "lowest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, name = object_name, health = object_health_percentage, distance = object_distance }
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.health < b.health end)
-								elseif CACHEUNITSALGORITHM == "nearest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, name = object_name, distance = object_distance, health = object_health_percentage}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.distance < b.distance end)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	]]
 	-- OFFSPRING
 	if oexecute then
 		local total_objects = ObjectsCount("player", 40)
