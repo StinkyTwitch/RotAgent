@@ -933,7 +933,6 @@ function CacheEnemyUnits()
 								elseif CACHEUNITSALGORITHM == "nearest" then
 									table.sort(CACHEUNITSTABLE, function(a,b) return a[4] < b[4] end)
 								end
-
 							end
 						end
 					end
@@ -942,43 +941,50 @@ function CacheEnemyUnits()
 		end
 	end
 	-- OFFSPRING
-	if oexecute then
+	if oexecute and ProbablyEngine.module.player.combat then
+		local loop_count = 0
 		local total_objects = ObjectsCount("player", 40)
+
 		for i=1, total_objects do
 			local _, object = pcall(ObjectByIndex,i)
 			local _, object_exists = pcall(UnitExists,object)
+
 			if object_exists then
 				local _, object_type = pcall(ObjectDescriptorInt,object,0x20)
 				local bitband = bit.band(object_type,0x8)
-				local _, target_guid_string = pcall(UnitGUID, target)
-				local _, object_guid_string = pcall(UnitGUID, object)
-				local _,_,_,_,_,target_guid,_ = strsplit("-",target_guid_string)
-				local _,_,_,_,_,object_guid,_ = strsplit("-",object_guid_string)
-				local _, x1, y1, z1,_ = pcall(UnitPosition, "player")
-				local _, x2, y2, z2,_ = pcall(UnitPosition, object)
-				local distance = math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
-				local _, object_health = pcall(UnitHealth, object)
-				local _, object_health_max = pcall(UnitHealthMax, object)
-				local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-				local _, object_name = pcall(UnitName, object)
-				local _, reaction = pcall(UnitReaction, "player", object)
-				local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-				local _, special_aura_target = pcall(SpecialAurasCheck, object)
-				local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
-				local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-				local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
+
 				if bitband > 0 then
-					if distance <= 40 then
+					local object_distance = GetRound(Distance("player", object), 2)
+
+					if object_distance <= 40 then
+						local _, object_health = pcall(UnitHealth, object)
+
 						if object_health > 0 then
+							local _, object_health_max = pcall(UnitHealthMax, object)
+							local object_health_percentage = math.floor((object_health / object_health_max) * 100)
+							local _, object_name = pcall(UnitName, object)
+							local _, reaction = pcall(UnitReaction, "player", object)
+							local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
+							local _, special_aura_target = pcall(SpecialAurasCheck, object)
+							local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
+							local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
+							local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
+
+
 							if reaction	and reaction <= 4 and not special_aura_target
 								and (tapped_by_me or tapped_by_all or special_enemy_target)
 							then
+								loop_count = loop_count + 1
+								CACHEUNITSTABLE[loop_count] = { }
+								CACHEUNITSTABLE[loop_count][1] = object
+								CACHEUNITSTABLE[loop_count][2] = object_name
+								CACHEUNITSTABLE[loop_count][3] = object_health_percentage
+								CACHEUNITSTABLE[loop_count][4] = object_distance
+
 								if CACHEUNITSALGORITHM == "lowest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+									table.sort(CACHEUNITSTABLE, function(a,b) return a[3] < b[3] end)
 								elseif CACHEUNITSALGORITHM == "nearest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+									table.sort(CACHEUNITSTABLE, function(a,b) return a[4] < b[4] end)
 								end
 							end
 						end
