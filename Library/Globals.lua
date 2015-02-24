@@ -575,48 +575,36 @@ function CurrentTargetTableInfo(target)
 	if UnitExists(target) and (FireHack or oexecute) then
 		local target_guid = tostring(UnitGUID(target))
 		local target_name = tostring(UnitName(target))
-		local target_affecting_combat = tostring(UnitAffectingCombat(target))
-		local target_attackable = tostring(UnitCanAttack("player", target))
-		local target_can_attack_me = tostring(UnitCanAttack(target, "player"))
-		if FireHack then
-			local _, x1, y1, z1 = pcall(ObjectPosition, "player")
-			local _, x2, y2, z2 = pcall(ObjectPosition, target)
-			local target_distance = math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
-		elseif oexecute then
-			local _, x1, y1, z1,_ = pcall(UnitPosition, "player")
-			local _, x2, y2, z2,_ = pcall(UnitPosition, target)
-			local target_distance = math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
-		end
-		local target_health = UnitHealth(target)
+		local target_distance = Distance("player", target)
+		local target_combat_reach = GetCombatReach(target)
+		local target_health_act = UnitHealth(target)
 		local target_health_max = UnitHealthMax(target)
-		local target_health_percentage = math.floor((target_health / target_health_max) * 100)
+		local target_health_pct = math.floor((target_health_act / target_health_max) * 100)
+		local target_affecting_combat = tostring(UnitAffectingCombat(target))
 		local target_reaction = UnitReaction("player", target)
 		local target_special_aura = tostring(SpecialAurasCheck(target))
 		local target_special_target = tostring(SpecialEnemyTargetsCheck(target))
 		local target_tapped_by_me = tostring(UnitIsTappedByPlayer(target))
 		local target_tapped_by_all = tostring(UnitIsTappedByAllThreatList(target))
-		if FireHack then
-			local target_combat_reach = UnitCombatReach(target)
-		elseif oexecute then
-			local target_combat_reach = ObjectDescriptorFloat(object,0x18C)
-		end
+		local target_attackp2t = tostring(UnitCanAttack("player", target))
+		local target_attackt2p = tostring(UnitCanAttack(target, "player"))
 		local target_deathin = TimeToDeath(target)
 
 		CURRENTTARGETINFOTABLE["guid"] = target_guid
 		CURRENTTARGETINFOTABLE["name"] = target_name
 		CURRENTTARGETINFOTABLE["distance"] = target_distance
 		CURRENTTARGETINFOTABLE["reach"] = target_combat_reach
-		CURRENTTARGETINFOTABLE["healthact"] = target_health
+		CURRENTTARGETINFOTABLE["healthact"] = target_health_act
 		CURRENTTARGETINFOTABLE["healthmax"] = target_health_max
-		CURRENTTARGETINFOTABLE["healthpct"] = target_health_percentage
+		CURRENTTARGETINFOTABLE["healthpct"] = target_health_pct
 		CURRENTTARGETINFOTABLE["combat"] = target_affecting_combat
 		CURRENTTARGETINFOTABLE["reaction"] = target_reaction
 		CURRENTTARGETINFOTABLE["specialaura"] = target_special_aura
 		CURRENTTARGETINFOTABLE["specialtarget"] = target_special_target
 		CURRENTTARGETINFOTABLE["tappedbyme"] = target_tapped_by_me
 		CURRENTTARGETINFOTABLE["tappedbyall"] = target_tapped_by_all
-		CURRENTTARGETINFOTABLE["attackp2t"] = target_attackable
-		CURRENTTARGETINFOTABLE["attackt2p"] = target_can_attack_me
+		CURRENTTARGETINFOTABLE["attackp2t"] = target_attackp2t
+		CURRENTTARGETINFOTABLE["attackt2p"] = target_attackt2p
 		CURRENTTARGETINFOTABLE["deathin"] = target_deathin
 	end
 end
@@ -646,6 +634,17 @@ function DEBUG(level, debug_string)
 	end
 end
 
+function GetCombatReach(unit)
+	local unit = unit
+	if FireHack then
+		return UnitCombatReach(unit)
+	elseif oexecute then
+		return ObjectDescriptorFloat(unit,0x18C)
+	else
+		return 0
+	end
+end
+
 function GetDistance(unit1, unit2)
 	local unit1, unit2 = a, unit2
 	local _, unit1_exists = pcall(UnitExists, unit1)
@@ -667,6 +666,17 @@ function GetDistance(unit1, unit2)
 		end
 	end
 	return 0
+end
+
+function GetRound(value, precision)
+	if value == nil then
+		return nil
+	end
+  if (precision) then
+    return math.floor( (value * 10^precision) + 0.5) / (10^precision)
+  else
+    return math.floor(value+0.5)
+  end
 end
 
 function onUpdate(NotificationFrame, elapsed)
@@ -875,10 +885,12 @@ end
 OBJECT MANAGER
 --------------------------------------------------------------------------------------------------]]
 function CacheEnemyUnits()
-	--wipe(CACHEUNITSTABLE)
+	wipe(CACHEUNITSTABLE)
+	--[[
 	for k in pairs(CACHEUNITSTABLE) do
 		CACHEUNITSTABLE[k] = nil
 	end
+	]]
 
 	-- FIREHACK
 	if FireHack then
@@ -894,7 +906,7 @@ function CacheEnemyUnits()
 				local dx = x2 - x1
 				local dy = y2 - y1
 				local dz = z2 - z1
-				local distance = math.sqrt((dx*dx) + (dy*dy) + (dz*dz))
+				local object_distance = math.sqrt((dx*dx) + (dy*dy) + (dz*dz))
 				local _, object_health = pcall(UnitHealth, object)
 				local _, object_health_max = pcall(UnitHealthMax, object)
 				local object_health_percentage = math.floor((object_health / object_health_max) * 100)
@@ -906,17 +918,17 @@ function CacheEnemyUnits()
 				local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
 				local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
 				if bitband > 0 then
-					if distance <= 40 then
+					if object_distance <= 40 then
 						if object_health > 0 then
 							if reaction	and reaction <= 4 and not special_aura_target
 								and (tapped_by_me or tapped_by_all or special_enemy_target)
 							then
 								if CACHEUNITSALGORITHM == "lowest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = object_health_percentage, name = object_name}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, name = object_name, health = object_health_percentage, distance = object_distance }
+									table.sort(CACHEUNITSTABLE, function(a,b) return a.health < b.health end)
 								elseif CACHEUNITSALGORITHM == "nearest" then
-									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, value = distance, name = object_name}
-									table.sort(CACHEUNITSTABLE, function(a,b) return a.value < b.value end)
+									CACHEUNITSTABLE[#CACHEUNITSTABLE+1] = {key = object, name = object_name, distance = object_distance, health = object_health_percentage}
+									table.sort(CACHEUNITSTABLE, function(a,b) return a.distance < b.distance end)
 								end
 							end
 						end

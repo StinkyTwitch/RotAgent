@@ -263,6 +263,8 @@ function SlashCmdList.LIBHUNTERCMD(msg, editbox)
         elseif moretext == "target" then
             CurrentTargetTableShow()
         end
+    elseif command == "vn" then
+        VisualNotificationsToggle()
     else
         LibHunter.QueueSpell = nil
     end

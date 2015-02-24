@@ -11,8 +11,8 @@ Externals\LibDraw.lua
 Library\Firehack.lua
 Library\Globals.lua
 Library\LibHunter.lua
-Library\Status.lua
-Library\VisualHelpers.lua
+Library\VisualNotifications.lua
+Library\VisualWindows.lua
 
 Rotations\Hunter\Survival.lua
 Rotations\Shaman\Elemental.lua
