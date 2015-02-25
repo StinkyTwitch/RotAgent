@@ -2,6 +2,7 @@
 **Priority**
 * Config GUI NOW!!!
   * NEED this 1st and foremost
+* Add in VisualHelpers checkbox to GUI
 
 * Look into adding another bit.band check to filter out corpses.
   * That would mean testing if dead NPC's ObjectTypes return Unit and Corpse
