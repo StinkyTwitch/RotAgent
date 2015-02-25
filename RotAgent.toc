@@ -5,8 +5,8 @@
 ## Version: 0.1
 ## Dependencies: Probably
 
-Externals\LibStub.lua
-Externals\LibDraw.lua
+Externals\LibDraw\LibStub.lua
+Externals\LibDraw\LibDraw.lua
 
 Library\Firehack.lua
 Library\Globals.lua

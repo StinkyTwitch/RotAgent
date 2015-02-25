@@ -21,7 +21,7 @@ else
 end
 
 LibDraw.line = LibDraw.line or { r = 0, g = 1, b = 0, a = 1, w = 1 }
-LibDraw.texture = "Interface\\AddOns\\Probably_RotAgent\\Externals\\Media\\LineTemplate"
+LibDraw.texture = "Interface\\AddOns\\RotAgent\\Externals\\LibDraw\\LineTemplate"
 LibDraw.level = "BACKGROUND"
 LibDraw.callbacks = { }
 

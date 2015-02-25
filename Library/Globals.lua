@@ -146,7 +146,7 @@ ProbablyEngine.condition.register("ccinarea", function(target, spell)
 			local object = ObjectWithIndex(i)
 			local _, object_exists = pcall(ObjectExists, object)
 			if object_exists then
-				local object_type = ObjectType(object)
+				local _, object_type = pcall(ObjectType, object)
 				local bitband = bit.band(object_type, ObjectTypes.Unit)
 				local target_guid = UnitGUID(target)
 				local object_guid_string = UnitGUID(object)
@@ -174,11 +174,11 @@ ProbablyEngine.condition.register("ccinarea", function(target, spell)
 			local object = ObjectByIndex(i)
 			local object_exists = UnitExists(object)
 			if object_exists then
-				local object_type = ObjectDescriptorInt(object,0x20)
-				local bitband = bit.band(object_type,0x8)
+				local _, object_type = pcall(ObjectDescriptorInt, object, 0x20)
+				local bitband = bit.band(object_type, 0x8)
 				local target_guid = UnitGUID(target)
 				local object_guid_string = UnitGUID(object)
-				local _,_,_,_,_,object_guid,_ = strsplit("-",object_guid_string)
+				local _,_,_,_,_,object_guid,_ = strsplit("-", object_guid_string)
 				if bitband > 0 then
 					if object_guid ~= target_guid then
 						local distance = GetDistance(target, object)
@@ -206,14 +206,14 @@ ProbablyEngine.condition.register("distancetotarget", function(target)
 
 	if attackable and not dead then
 		if FireHack then
-			local x1, y1, z1 = ObjectPosition(target)
+			local _, x1, y1, z1 = pcall(ObjectPosition, target)
 			local x2, y2, z2 = ObjectPosition("target")
 			local dx = x2 - x1
 			local dy = y2 - y1
 			local dz = z2 - z1
 			return math.sqrt((dx*dx) + (dy*dy) + (dz*dz))
 		elseif oexecute then
-			local x1, y1, z1, _ = UnitPosition(target)
+			local _, x1, y1, z1, _ = pcall(UnitPosition, target)
 			local x2, y2, z2, _ = UnitPosition("target")
 			local dx = x2 - x1
 			local dy = y2 - y1
@@ -533,7 +533,7 @@ function CurrentTargetTableInfo(target)
 			local _, object_exists = pcall(ObjectExists,object)
 
 			if object_exists then
-				local object_type = ObjectType(object)
+				local _, object_type = pcall(ObjectType, object)
 				local bitband = bit.band(object_type, ObjectTypes.Unit)
 				local _,_,_,_,_,object_guid,_ = strsplit("-",UnitGUID(object))
 				if bitband > 0 then
@@ -551,11 +551,11 @@ function CurrentTargetTableInfo(target)
 			local object_exists = UnitExists(object)
 
 			if object_exists then
-				local object_type = ObjectDescriptorInt(object,0x20)
-				local bitband = bit.band(object_type,0x8)
+				local _, object_type = pcall(ObjectDescriptorInt, object, 0x20)
+				local bitband = bit.band(object_type, 0x8)
 				local target_guid = UnitGUID(target)
 				local object_guid_string = UnitGUID(object)
-				local _,_,_,_,_,object_guid,_ = strsplit("-",object_guid_string)
+				local _,_,_,_,_,object_guid,_ = strsplit("-", object_guid_string)
 
 				if bitband > 0 then
 
@@ -654,12 +654,12 @@ function GetDistance(unit1, unit2)
 
 	if unit1_exists and unit1_visible and unit2_exists and unit2_visible then
 		if FireHack then
-			local x1, y1, z1 = ObjectPosition(unit1)
-			local x2, y2, z2 = ObjectPosition(unit2)
+			local _, x1, y1, z1 = pcall(ObjectPosition, unit1)
+			local _, x2, y2, z2 = pcall(ObjectPosition, unit2)
 			return GetRound(math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2)), 2)
 		elseif oexecute then
-			local x1, y1, z1, _ = UnitPosition(unit1)
-			local x2, y2, z2, _ = UnitPosition(unit2)
+			local _, x1, y1, z1, _ = pcall(UnitPosition, unit1)
+			local _, x2, y2, z2, _ = pcall(UnitPosition, unit2)
 			return math.sqrt(((x2-x1)^2) + ((y2-y1)^2) + ((z2-z1)^2))
 		else
 			return 0
@@ -829,13 +829,13 @@ function TargetIsInFrontCheck(debuglevel, unit)
 	end
 
 	if FireHack then
-		local x1, y1, z1 = ObjectPosition(unit)
+		local _, x1, y1, z1 = pcall(ObjectPosition, unit)
 		local x2, y2, z2 = ObjectPosition("player")
 		local player_facing = GetPlayerFacing()
 		local facing = math.atan2(y2 - y1, x2 - x1) % 6.2831853071796
 		return math.abs(math.deg(math.abs(player_facing - (facing))) - 180) < 90
 	elseif oexecute then
-		local x1, y1, z1, _ = UnitPosition(unit)
+		local _, x1, y1, z1, _ = pcall(UnitPosition, unit)
 		local x2, y2, z2, player_facing = UnitPosition("player")
 		local facing = math.atan2(y2 - y1, x2 - x1) % 6.2831853071796
 		return math.abs(math.deg(math.abs(player_facing - (facing))) - 180) < 90
@@ -884,17 +884,16 @@ end
 --[[------------------------------------------------------------------------------------------------
 OBJECT MANAGER
 --------------------------------------------------------------------------------------------------]]
-local cacheunitstable_free = { }
+local cacheunitstable_storage = { }
 
 local function clearCache()
     for i = #CACHEUNITSTABLE, 1, -1 do
-        tinsert(cacheunitstable_free, tremove(CACHEUNITSTABLE))
+        tinsert(cacheunitstable_storage, tremove(CACHEUNITSTABLE))
     end
 end
 
 local function getTable()
-    local t = tremove(cacheunitstable_free)
-
+    local t = tremove(cacheunitstable_storage)
     if t ~= nil then
         tinsert(CACHEUNITSTABLE, t)
         return t
@@ -904,7 +903,6 @@ local function getTable()
         return t
     end
 end
-
 
 function CacheEnemyUnits()
     clearCache()
@@ -918,7 +916,7 @@ function CacheEnemyUnits()
 			local _, object_exists = pcall(ObjectExists, object)
 
 			if object_exists then
-				local object_type = ObjectType(object)
+				local _, object_type = pcall(ObjectType, object)
 
 				if bit.band(object_type, ObjectTypes.Unit) > 0 then
 					local object_distance = GetRound(Distance("player", object), 2)
@@ -942,7 +940,6 @@ function CacheEnemyUnits()
 								and (tapped_by_me or tapped_by_all or special_enemy_target)
 							then
 								local t = getTable()
-								print(t)
 								t.object = object
 								t.name = object_name
 								t.health = object_health_percentage
@@ -961,115 +958,3 @@ function CacheEnemyUnits()
 		end
 	end
 end
---[[
-function CacheEnemyUnits()
-
-	wipe(CACHEUNITSTABLE)
-
-	-- FIREHACK
-	if FireHack and ProbablyEngine.module.player.combat then
-		local loop_count = 0
-		local total_objects = ObjectCount()
-
-		for i=1, total_objects do
-			local _, object = pcall(ObjectWithIndex, i)
-			local _, object_exists = pcall(ObjectExists, object)
-
-			if object_exists then
-				local _, object_type = pcall(ObjectType, object)
-				local bitband = bit.band(object_type, ObjectTypes.Unit)
-
-				if bitband > 0 then
-					local object_distance = GetRound(Distance("player", object), 2)
-
-					if object_distance <= 40 then
-						local _, object_health = pcall(UnitHealth, object)
-
-						if object_health > 0 then
-							local _, object_health_max = pcall(UnitHealthMax, object)
-							local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-							local _, object_name = pcall(UnitName, object)
-							local _, reaction = pcall(UnitReaction, "player", object)
-							local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-							local _, special_aura_target = pcall(SpecialAurasCheck, object)
-							local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
-							local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-							local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
-
-							if reaction	and reaction <= 4 and not special_aura_target
-								and (tapped_by_me or tapped_by_all or special_enemy_target)
-							then
-								loop_count = loop_count + 1
-								CACHEUNITSTABLE[loop_count] = { }
-								CACHEUNITSTABLE[loop_count][1] = object
-								CACHEUNITSTABLE[loop_count][2] = object_name
-								CACHEUNITSTABLE[loop_count][3] = object_health_percentage
-								CACHEUNITSTABLE[loop_count][4] = object_distance
-
-								if CACHEUNITSALGORITHM == "lowest" then
-									table.sort(CACHEUNITSTABLE, function(a,b) return a[3] < b[3] end)
-								elseif CACHEUNITSALGORITHM == "nearest" then
-									table.sort(CACHEUNITSTABLE, function(a,b) return a[4] < b[4] end)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	-- OFFSPRING
-	if oexecute and ProbablyEngine.module.player.combat then
-		local loop_count = 0
-		local total_objects = ObjectsCount("player", 40)
-
-		for i=1, total_objects do
-			local _, object = pcall(ObjectByIndex,i)
-			local _, object_exists = pcall(UnitExists,object)
-
-			if object_exists then
-				local _, object_type = pcall(ObjectDescriptorInt,object,0x20)
-				local bitband = bit.band(object_type,0x8)
-
-				if bitband > 0 then
-					local object_distance = GetRound(Distance("player", object), 2)
-
-					if object_distance <= 40 then
-						local _, object_health = pcall(UnitHealth, object)
-
-						if object_health > 0 then
-							local _, object_health_max = pcall(UnitHealthMax, object)
-							local object_health_percentage = math.floor((object_health / object_health_max) * 100)
-							local _, object_name = pcall(UnitName, object)
-							local _, reaction = pcall(UnitReaction, "player", object)
-							local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-							local _, special_aura_target = pcall(SpecialAurasCheck, object)
-							local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
-							local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
-							local _, unit_affecting_combat = pcall(UnitAffectingCombat, object)
-
-
-							if reaction	and reaction <= 4 and not special_aura_target
-								and (tapped_by_me or tapped_by_all or special_enemy_target)
-							then
-								loop_count = loop_count + 1
-								CACHEUNITSTABLE[loop_count] = { }
-								CACHEUNITSTABLE[loop_count][1] = object
-								CACHEUNITSTABLE[loop_count][2] = object_name
-								CACHEUNITSTABLE[loop_count][3] = object_health_percentage
-								CACHEUNITSTABLE[loop_count][4] = object_distance
-
-								if CACHEUNITSALGORITHM == "lowest" then
-									table.sort(CACHEUNITSTABLE, function(a,b) return a[3] < b[3] end)
-								elseif CACHEUNITSALGORITHM == "nearest" then
-									table.sort(CACHEUNITSTABLE, function(a,b) return a[4] < b[4] end)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-end
-]]

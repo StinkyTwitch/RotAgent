@@ -74,12 +74,12 @@ function ProbablyEngine.protected.FireHack()
 					local object = ObjectWithIndex(i)
 					local _, oType = pcall(ObjectType, object)
 					if bit.band(oType, ObjectTypes.Unit) > 0 then
-						local _, reaction = pcall(UnitReaction, "player", object)
-						local _, combat = pcall(UnitAffectingCombat, object)
-						local _, special_enemy_target = pcall(SpecialEnemyTargetsCheck, object)
-						local _, special_aura_target = pcall(SpecialAurasCheck, object)
-						local _, tapped_by_me = pcall(UnitIsTappedByPlayer, object)
-						local _, tapped_by_all = pcall(UnitIsTappedByAllThreatList, object)
+						local reaction = UnitReaction("player", object)
+						local combat = UnitAffectingCombat(object)
+						local special_enemy_target = SpecialEnemyTargetsCheck(object)
+						local special_aura_target = SpecialAurasCheck(object)
+						local tapped_by_me = UnitIsTappedByPlayer(object)
+						local tapped_by_all = UnitIsTappedByAllThreatList(object)
 						if reaction and reaction <= 4 and not special_aura_target
 							and (ignoreCombat or tapped_by_me or tapped_by_all or special_enemy_target)
 						then
@@ -164,7 +164,7 @@ function ProbablyEngine.protected.FireHack()
 			if not (UnitExists(unit1) and UnitExists(unit2)) then return end
 			local _, x1, y1, _ = pcall(ObjectPosition, unit1)
 			local _, x2, y2, _ = pcall(ObjectPosition, unit2)
-			local facing = ObjectFacing(unit1)
+			local _, facing = pcall(ObjectFacing, unit1)
 			local angle = atan2(y1 - y2, x1 - x2) - deg(facing)
 			if angle < 0 then
 				angle = angle + 360

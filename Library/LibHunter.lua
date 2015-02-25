@@ -33,7 +33,7 @@ end
 -- Verify Vector
 function VerifyDisengage(vector)
     if FireHack then
-        local _, player_facing = pcall(ObjectFacing, "player")
+        local player_facing = ObjectFacing("player")
 
         if player_facing ~= vector then
             FaceDirection(vector)
@@ -47,7 +47,7 @@ end
 -- Disengage Forward
 function DisengageForward()
     if FireHack then
-        local _, initial_vector = pcall(ObjectFacing, "player")
+        local initial_vector = ObjectFacing("player")
         local disengage_vector = (mod( initial_vector + math.pi, math.pi * 2 ))
 
         C_Timer.After(.001, function() FaceDirection(disengage_vector) end)

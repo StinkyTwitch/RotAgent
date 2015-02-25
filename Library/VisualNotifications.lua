@@ -58,7 +58,7 @@ LibDraw.Sync(function()
 				local combat_reach = UnitCombatReach(LIBDRAWPARSEDTARGET)
 
 				if unit_exists then
-					LibDraw.Circle(targetX, targetY, targetZ, combat_reach)
+					LibDraw.Circle(targetX, targetY, targetZ, combat_reach-0.25)
 					LibDraw.Line(playerX, playerY, playerZ, targetX, targetY, targetZ)
 					C_Timer.After(1, function() LIBDRAWPARSEDTARGET = nil end)
 				end

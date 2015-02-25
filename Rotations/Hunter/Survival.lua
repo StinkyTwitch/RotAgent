@@ -333,6 +333,7 @@ local ooc = {
     }, },
 	{ s.DismissPet, { "pet.exists", "talent(7,3)", }, },
 	{ s.RevivePet, { "pet.dead", "!talent(7,3)", }, },
+	{ s.MendPet, { "pet.exists", "!pet.dead", "!pet.buff("..s.MendPet..")",	function() return dynamicEval("pet.health <= "..conf('petmend', 95).."") end, }, "pet", },
 	{ s.TrapLauncher, {
 		"!player.buff("..s.TrapLauncher..")",
 		function() return conf('autotraplauncher', true) == true end,
