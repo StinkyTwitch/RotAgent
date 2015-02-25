@@ -1,10 +1,14 @@
 ----------------------------------------------------------------------------------------------------
 -- Version 0.1 Hunter
 ----------------------------------------------------------------------------------------------------
+    ## BUGS ##
+    * Firehack.lua still sometimes counts dead units. Look into this deeper. Still not filtering
+      out enough.
+
     ## HIGH PRIORITY ##
     [  0%]  * Auto AMoC Sniping (add GUI option)
     [  0%]  * Auto Serpent Sting all non Serpent Sting Units in Cache (add GUI option)
-    [  0%]  * Turn OFF Growl if Loded into Instance
+    [  0%]  * Turn OFF Growl if Loaded into Instance
     [  0%]  * Add in VisualHelpers checkbox to GUI
 
 

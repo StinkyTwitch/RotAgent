@@ -642,7 +642,7 @@ function()
 	-- SPLASH LOGO
 	--------------------------------------------------------------------------------------------]]--
 	local function onUpdate(RotAgentSplash,elapsed)
-		if RotAgentSplash.time < GetTime() - 15.0 then
+		if RotAgentSplash.time < GetTime() - 8.0 then
 			if RotAgentSplash:GetAlpha() then
 				RotAgentSplash:Hide()
 			else
@@ -664,7 +664,7 @@ function()
 			RotAgentSplash:SetPoint("CENTER",UIParent)
 			RotAgentSplash:SetWidth(512)
 			RotAgentSplash:SetHeight(512)
-			RotAgentSplash:SetBackdrop({ bgFile = "Interface\\AddOns\\RotAgent\\Library\\Media\\splash.tga" })
+			RotAgentSplash:SetBackdrop({ bgFile = "Interface\\AddOns\\RotAgent\\Library\\Media\\splash.blp" })
 			RotAgentSplash:SetScript("onUpdate",onUpdate)
 			RotAgentSplash:Hide()
 			RotAgentSplash.time = 0
