@@ -474,8 +474,8 @@ function AutoTargetEnemy()
 			local object_attackable = UnitCanAttack("player", CACHEUNITSTABLE[i].object)
 
 			if object_exists then
-				if not TargetIsImmuneCheck(1, CACHEUNITSTABLE[i].object) then
-					if TargetIsInFrontCheck(1, CACHEUNITSTABLE[i].object) then
+				if not TargetIsImmuneCheck(5, CACHEUNITSTABLE[i].object) then
+					if TargetIsInFrontCheck(5, CACHEUNITSTABLE[i].object) then
 						if object_attackable then
 							return TargetUnit(CACHEUNITSTABLE[i].object)
 						end
@@ -496,8 +496,8 @@ function AutoTargetEnemy()
 				local object_exists = UnitExists(CACHEUNITSTABLE[i].object)
 
 				if object_exists then
-					if not TargetIsImmuneCheck(1, CACHEUNITSTABLE[i].object) then
-						if TargetIsInFrontCheck(1, CACHEUNITSTABLE[i].object) then
+					if not TargetIsImmuneCheck(5, CACHEUNITSTABLE[i].object) then
+						if TargetIsInFrontCheck(5, CACHEUNITSTABLE[i].object) then
 							if UnitCanAttack("player", CACHEUNITSTABLE[i].object) then
 								return TargetUnit(CACHEUNITSTABLE[i].object)
 							end
@@ -636,10 +636,14 @@ end
 
 function GetCombatReach(unit)
 	local unit = unit
-	if FireHack then
-		return UnitCombatReach(unit)
-	elseif oexecute then
-		return ObjectDescriptorFloat(unit,0x18C)
+	if UnitExists(unit) then
+		if FireHack then
+			return UnitCombatReach(unit)
+		elseif oexecute then
+			return ObjectDescriptorFloat(unit,0x18C)
+		else
+			return 0
+		end
 	else
 		return 0
 	end
