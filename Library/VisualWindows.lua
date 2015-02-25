@@ -170,90 +170,90 @@ function LiveUnitCacheTableUpdate()
 		liveunitcachetable_gui.elements.unitcacheindextotal:SetText("\124cffFFFFFFUnit Count = \124cff666666"..unitcacheindexcount)
 
 		if CACHEUNITSTABLE[1] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex1key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[1][1])
-		    liveunitcachetable_gui.elements.unitcacheindex1name:SetText("\124cff4e7300"..CACHEUNITSTABLE[1][2])
-		    liveunitcachetable_gui.elements.unitcacheindex1value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[1][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[1][3])
+		    liveunitcachetable_gui.elements.unitcacheindex1key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[1].object)
+		    liveunitcachetable_gui.elements.unitcacheindex1name:SetText("\124cff4e7300"..CACHEUNITSTABLE[1].name)
+		    liveunitcachetable_gui.elements.unitcacheindex1value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[1].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[1].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex1key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex1name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex1value:SetText("")
 		end
 		if CACHEUNITSTABLE[2] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex2key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[2][1])
-		    liveunitcachetable_gui.elements.unitcacheindex2name:SetText("\124cff4e7300"..CACHEUNITSTABLE[2][2])
-		    liveunitcachetable_gui.elements.unitcacheindex2value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[2][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[2][3])
+		    liveunitcachetable_gui.elements.unitcacheindex2key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[2].object)
+		    liveunitcachetable_gui.elements.unitcacheindex2name:SetText("\124cff4e7300"..CACHEUNITSTABLE[2].name)
+		    liveunitcachetable_gui.elements.unitcacheindex2value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[2].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[2].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex2key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex2name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex2value:SetText("")
 		end
 		if CACHEUNITSTABLE[3] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex3key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[3][1])
-		    liveunitcachetable_gui.elements.unitcacheindex3name:SetText("\124cff4e7300"..CACHEUNITSTABLE[3][2])
-		    liveunitcachetable_gui.elements.unitcacheindex3value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[3][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[3][3])
+		    liveunitcachetable_gui.elements.unitcacheindex3key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[3].object)
+		    liveunitcachetable_gui.elements.unitcacheindex3name:SetText("\124cff4e7300"..CACHEUNITSTABLE[3].name)
+		    liveunitcachetable_gui.elements.unitcacheindex3value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[3].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[3].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex3key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex3name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex3value:SetText("")
 		end
 		if CACHEUNITSTABLE[4] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex4key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[4][1])
-		    liveunitcachetable_gui.elements.unitcacheindex4name:SetText("\124cff4e7300"..CACHEUNITSTABLE[4][2])
-		    liveunitcachetable_gui.elements.unitcacheindex4value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[4][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[4][3])
+		    liveunitcachetable_gui.elements.unitcacheindex4key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[4].object)
+		    liveunitcachetable_gui.elements.unitcacheindex4name:SetText("\124cff4e7300"..CACHEUNITSTABLE[4].name)
+		    liveunitcachetable_gui.elements.unitcacheindex4value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[4].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[4].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex4key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex4name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex4value:SetText("")
 		end
 		if CACHEUNITSTABLE[5] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex5key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[5][1])
-		    liveunitcachetable_gui.elements.unitcacheindex5name:SetText("\124cff4e7300"..CACHEUNITSTABLE[5][2])
-		    liveunitcachetable_gui.elements.unitcacheindex5value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[5][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[5][3])
+		    liveunitcachetable_gui.elements.unitcacheindex5key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[5].object)
+		    liveunitcachetable_gui.elements.unitcacheindex5name:SetText("\124cff4e7300"..CACHEUNITSTABLE[5].name)
+		    liveunitcachetable_gui.elements.unitcacheindex5value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[5].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[5].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex5key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex5name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex5value:SetText("")
 		end
 		if CACHEUNITSTABLE[6] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex6key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[6][1])
-		    liveunitcachetable_gui.elements.unitcacheindex6name:SetText("\124cff4e7300"..CACHEUNITSTABLE[6][2])
-		    liveunitcachetable_gui.elements.unitcacheindex6value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[6][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[6][3])
+		    liveunitcachetable_gui.elements.unitcacheindex6key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[6].object)
+		    liveunitcachetable_gui.elements.unitcacheindex6name:SetText("\124cff4e7300"..CACHEUNITSTABLE[6].name)
+		    liveunitcachetable_gui.elements.unitcacheindex6value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[6].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[6].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex6key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex6name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex6value:SetText("")
 		end
 		if CACHEUNITSTABLE[7] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex7key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[7][1])
-		    liveunitcachetable_gui.elements.unitcacheindex7name:SetText("\124cff4e7300"..CACHEUNITSTABLE[7][2])
-		    liveunitcachetable_gui.elements.unitcacheindex7value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[7][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[7][3])
+		    liveunitcachetable_gui.elements.unitcacheindex7key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[7].object)
+		    liveunitcachetable_gui.elements.unitcacheindex7name:SetText("\124cff4e7300"..CACHEUNITSTABLE[7].name)
+		    liveunitcachetable_gui.elements.unitcacheindex7value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[7].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[7].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex7key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex7name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex7value:SetText("")
 		end
 		if CACHEUNITSTABLE[8] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex8key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[8][1])
-		    liveunitcachetable_gui.elements.unitcacheindex8name:SetText("\124cff4e7300"..CACHEUNITSTABLE[8][2])
-		    liveunitcachetable_gui.elements.unitcacheindex8value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[8][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[8][3])
+		    liveunitcachetable_gui.elements.unitcacheindex8key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[8].object)
+		    liveunitcachetable_gui.elements.unitcacheindex8name:SetText("\124cff4e7300"..CACHEUNITSTABLE[8].name)
+		    liveunitcachetable_gui.elements.unitcacheindex8value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[8].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[8].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex8key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex8name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex8value:SetText("")
 		end
 		if CACHEUNITSTABLE[9] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex9key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[9][1])
-		    liveunitcachetable_gui.elements.unitcacheindex9name:SetText("\124cff4e7300"..CACHEUNITSTABLE[9][2])
-		    liveunitcachetable_gui.elements.unitcacheindex9value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[9][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[9][3])
+		    liveunitcachetable_gui.elements.unitcacheindex9key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[9].object)
+		    liveunitcachetable_gui.elements.unitcacheindex9name:SetText("\124cff4e7300"..CACHEUNITSTABLE[9].name)
+		    liveunitcachetable_gui.elements.unitcacheindex9value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[9].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[9].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex9key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex9name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex9value:SetText("")
 		end
 		if CACHEUNITSTABLE[10] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex10key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[10][1])
-		    liveunitcachetable_gui.elements.unitcacheindex10name:SetText("\124cff4e7300"..CACHEUNITSTABLE[10][2])
-		    liveunitcachetable_gui.elements.unitcacheindex10value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[10][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[10][3])
+		    liveunitcachetable_gui.elements.unitcacheindex10key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[10].object)
+		    liveunitcachetable_gui.elements.unitcacheindex10name:SetText("\124cff4e7300"..CACHEUNITSTABLE[10].name)
+		    liveunitcachetable_gui.elements.unitcacheindex10value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[10].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[10].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex10key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex10name:SetText("")
@@ -261,90 +261,90 @@ function LiveUnitCacheTableUpdate()
 		end
 
 		if CACHEUNITSTABLE[11] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex11key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[11][1])
-		    liveunitcachetable_gui.elements.unitcacheindex11name:SetText("\124cff4e7300"..CACHEUNITSTABLE[11][2])
-		    liveunitcachetable_gui.elements.unitcacheindex11value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[11][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[11][3])
+		    liveunitcachetable_gui.elements.unitcacheindex11key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[11].object)
+		    liveunitcachetable_gui.elements.unitcacheindex11name:SetText("\124cff4e7300"..CACHEUNITSTABLE[11].name)
+		    liveunitcachetable_gui.elements.unitcacheindex11value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[11].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[11].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex11key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex11name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex11value:SetText("")
 		end
 		if CACHEUNITSTABLE[12] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex12key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[12][1])
-		    liveunitcachetable_gui.elements.unitcacheindex12name:SetText("\124cff4e7300"..CACHEUNITSTABLE[12][2])
-		    liveunitcachetable_gui.elements.unitcacheindex12value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[12][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[12][3])
+		    liveunitcachetable_gui.elements.unitcacheindex12key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[12].object)
+		    liveunitcachetable_gui.elements.unitcacheindex12name:SetText("\124cff4e7300"..CACHEUNITSTABLE[12].name)
+		    liveunitcachetable_gui.elements.unitcacheindex12value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[12].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[12].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex12key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex12name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex12value:SetText("")
 		end
 		if CACHEUNITSTABLE[13] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex13key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[13][1])
-		    liveunitcachetable_gui.elements.unitcacheindex13name:SetText("\124cff4e7300"..CACHEUNITSTABLE[13][2])
-		    liveunitcachetable_gui.elements.unitcacheindex13value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[13][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[13][3])
+		    liveunitcachetable_gui.elements.unitcacheindex13key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[13].object)
+		    liveunitcachetable_gui.elements.unitcacheindex13name:SetText("\124cff4e7300"..CACHEUNITSTABLE[13].name)
+		    liveunitcachetable_gui.elements.unitcacheindex13value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[13].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[13].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex13key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex13name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex13value:SetText("")
 		end
 		if CACHEUNITSTABLE[14] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex14key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[14][1])
-		    liveunitcachetable_gui.elements.unitcacheindex14name:SetText("\124cff4e7300"..CACHEUNITSTABLE[1][2])
-		    liveunitcachetable_gui.elements.unitcacheindex14value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[14][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[14][3])
+		    liveunitcachetable_gui.elements.unitcacheindex14key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[14].object)
+		    liveunitcachetable_gui.elements.unitcacheindex14name:SetText("\124cff4e7300"..CACHEUNITSTABLE[14].name)
+		    liveunitcachetable_gui.elements.unitcacheindex14value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[14].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[14].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex14key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex14name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex14value:SetText("")
 		end
 		if CACHEUNITSTABLE[15] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex15key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[15][1])
-		    liveunitcachetable_gui.elements.unitcacheindex15name:SetText("\124cff4e7300"..CACHEUNITSTABLE[15][2])
-		    liveunitcachetable_gui.elements.unitcacheindex15value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[15][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[5][3])
+		    liveunitcachetable_gui.elements.unitcacheindex15key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[15].object)
+		    liveunitcachetable_gui.elements.unitcacheindex15name:SetText("\124cff4e7300"..CACHEUNITSTABLE[15].name)
+		    liveunitcachetable_gui.elements.unitcacheindex15value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[15].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[15].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex15key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex15name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex15value:SetText("")
 		end
 		if CACHEUNITSTABLE[16] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex16key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[16][1])
-		    liveunitcachetable_gui.elements.unitcacheindex16name:SetText("\124cff4e7300"..CACHEUNITSTABLE[16][2])
-		    liveunitcachetable_gui.elements.unitcacheindex16value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[16][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[16][3])
+		    liveunitcachetable_gui.elements.unitcacheindex16key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[16].object)
+		    liveunitcachetable_gui.elements.unitcacheindex16name:SetText("\124cff4e7300"..CACHEUNITSTABLE[16].name)
+		    liveunitcachetable_gui.elements.unitcacheindex16value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[16].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[16].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex16key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex16name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex16value:SetText("")
 		end
 		if CACHEUNITSTABLE[17] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex17key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[17][1])
-		    liveunitcachetable_gui.elements.unitcacheindex17name:SetText("\124cff4e7300"..CACHEUNITSTABLE[17][2])
-		    liveunitcachetable_gui.elements.unitcacheindex17value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[17][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[17][3])
+		    liveunitcachetable_gui.elements.unitcacheindex17key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[17].object)
+		    liveunitcachetable_gui.elements.unitcacheindex17name:SetText("\124cff4e7300"..CACHEUNITSTABLE[17].name)
+		    liveunitcachetable_gui.elements.unitcacheindex17value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[17].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[17].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex17key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex17name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex17value:SetText("")
 		end
 		if CACHEUNITSTABLE[18] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex18key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[18][1])
-		    liveunitcachetable_gui.elements.unitcacheindex18name:SetText("\124cff4e7300"..CACHEUNITSTABLE[18][2])
-		    liveunitcachetable_gui.elements.unitcacheindex18value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[18][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[18][3])
+		    liveunitcachetable_gui.elements.unitcacheindex18key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[18].object)
+		    liveunitcachetable_gui.elements.unitcacheindex18name:SetText("\124cff4e7300"..CACHEUNITSTABLE[18].name)
+		    liveunitcachetable_gui.elements.unitcacheindex18value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[18].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[18].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex18key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex18name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex18value:SetText("")
 		end
 		if CACHEUNITSTABLE[19] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex19key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[19][1])
-		    liveunitcachetable_gui.elements.unitcacheindex19name:SetText("\124cff4e7300"..CACHEUNITSTABLE[19][2])
-		    liveunitcachetable_gui.elements.unitcacheindex19value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[19][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[19][3])
+		    liveunitcachetable_gui.elements.unitcacheindex19key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[19].object)
+		    liveunitcachetable_gui.elements.unitcacheindex19name:SetText("\124cff4e7300"..CACHEUNITSTABLE[19].name)
+		    liveunitcachetable_gui.elements.unitcacheindex19value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[19].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[19].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex19key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex19name:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex19value:SetText("")
 		end
 		if CACHEUNITSTABLE[20] ~= nil then
-		    liveunitcachetable_gui.elements.unitcacheindex20key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[20][1])
-		    liveunitcachetable_gui.elements.unitcacheindex20name:SetText("\124cff4e7300"..CACHEUNITSTABLE[2][2])
-		    liveunitcachetable_gui.elements.unitcacheindex20value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[20][4].." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[20][3])
+		    liveunitcachetable_gui.elements.unitcacheindex20key:SetText("\124cffFFFFFF[01] \124cff666666"..CACHEUNITSTABLE[20].object)
+		    liveunitcachetable_gui.elements.unitcacheindex20name:SetText("\124cff4e7300"..CACHEUNITSTABLE[20].name)
+		    liveunitcachetable_gui.elements.unitcacheindex20value:SetText("\124cffFFFFFFdistance \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[20].distance.." \124cffFFFFFFhealth \124cff666666= \124cff4e7300"..CACHEUNITSTABLE[20].health)
 		else
 		    liveunitcachetable_gui.elements.unitcacheindex20key:SetText("")
 		    liveunitcachetable_gui.elements.unitcacheindex20name:SetText("")

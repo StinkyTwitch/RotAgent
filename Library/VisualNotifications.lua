@@ -29,20 +29,20 @@ LibDraw.Sync(function()
 	if FireHack and visualnotifications then
 		if ProbablyEngine.module.player.combat then
 			if ProbablyEngine.module.player.specID == 253
-				or ProbablyEngine.module.player.specID == 254
-				or ProbablyEngine.module.player.specID == 255
+			or ProbablyEngine.module.player.specID == 254
+			or ProbablyEngine.module.player.specID == 255
 			then
 				for i=1, #CACHEUNITSTABLE do
-					local _, serpent_stung = pcall(UnitDebuff, CACHEUNITSTABLE[i][1], "Serpent Sting")
-					local _, unit_exists = pcall(UnitExists, CACHEUNITSTABLE[i][1])
+					local serpent_stung = UnitDebuff(CACHEUNITSTABLE[i].object, "Serpent Sting")
+					local unit_exists = UnitExists(CACHEUNITSTABLE[i].object)
 					local dead = UnitIsDead("target")
 
 					if not serpent_stung and unit_exists and not dead then
 						LibDraw.SetColor(255, 0, 0, 255)
 						LibDraw.SetWidth(1)
 
-						local targetX, targetY, targetZ = ObjectPosition(CACHEUNITSTABLE[i][1])
-						local _, combat_reach = pcall(UnitCombatReach,CACHEUNITSTABLE[i][1])
+						local targetX, targetY, targetZ = ObjectPosition(CACHEUNITSTABLE[i].object)
+						local combat_reach = UnitCombatReach(CACHEUNITSTABLE[i].object)
 
 						LibDraw.Circle(targetX, targetY, targetZ, combat_reach)
 					end
@@ -52,10 +52,10 @@ LibDraw.Sync(function()
 			if LIBDRAWPARSEDTARGET ~= nil then
 				LibDraw.SetColor(0, 255, 0, 255)
 				LibDraw.SetWidth(1)
-				local _, unit_exists = pcall(UnitExists, LIBDRAWPARSEDTARGET)
+				local unit_exists = UnitExists(LIBDRAWPARSEDTARGET)
 				local playerX, playerY, playerZ = ObjectPosition("player")
-				local _, targetX, targetY, targetZ = pcall(ObjectPosition, LIBDRAWPARSEDTARGET)
-				local _, combat_reach = pcall(UnitCombatReach, LIBDRAWPARSEDTARGET)
+				local targetX, targetY, targetZ = ObjectPosition(LIBDRAWPARSEDTARGET)
+				local combat_reach = UnitCombatReach(LIBDRAWPARSEDTARGET)
 
 				if unit_exists then
 					LibDraw.Circle(targetX, targetY, targetZ, combat_reach)
