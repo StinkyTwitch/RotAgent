@@ -1,0 +1,84 @@
+----------------------------------------------------------------------------------------------------
+-- Version 0.1 Hunter
+----------------------------------------------------------------------------------------------------
+    ## BUGS ##
+    * Firehack.lua still sometimes counts dead units. Look into this deeper. Still not filtering
+      out enough.
+
+    ## HIGH PRIORITY ##
+    [  0%]  * Auto AMoC Sniping (add GUI option)
+    [  0%]  * Auto Serpent Sting all non Serpent Sting Units in Cache (add GUI option)
+    [  0%]  * Turn OFF Growl if Loaded into Instance
+    [  0%]  * Add in VisualHelpers checkbox to GUI
+
+
+    ## LOW PRIORITY ##
+    [  0%]  * Autoloot
+    [  0%]  * WoD Auto Object Interaction
+            [  0%]  * Blacklist for Auto Object Interaction
+    [  0%]  * One Lib File for each class.
+            [100%]  - Local Variables and Functions and Tables.
+            [100%]  - Lib\LibHunter.lua
+            [ 75%]  - Rotation\hunter-beastmastery.lua
+            [100%]  - Rotation\hunter-marksmanship.lua
+            [100%]  - Rotation\hunter-survival.lua
+    [  0%]  * Use NOCARRIER's combat log UnitsAroundUnit to build a non FH/OS cache manager
+
+
+    ## DONE ##
+    [100%]  * Autotarget, If/then tables for:
+                    - Nearest
+                    - Lowest Health
+                    - Cascade (Skull icon to FocusTarget to Nearest/Lowest)
+    [100%]  * Auto cast Explosive Trap on largest cluster of Units
+    [100%]  * GUI
+
+    [100%]  * Forward Disengage
+
+    [100%]  * TimeToDie logic (prevent cooldown usage on trash)
+    [100%]  * Support for all talents
+    [  0%]  * Interrupt, with custom list of PvE spells (heroics/raids)
+    [100%]  * Pet MACRO for what pet slot to automatically summon
+    [100%]  * Pool focus if Rapid Fire is close to coming off of cooldown
+    [100%]  * Working Tranquilizing Shot
+    [100%]  * Improve Autotarget/Switchtarget (NEEDS MORE TESTING BUT SHOULD BE DONE)
+    [ 66%]  * Opener
+            [100%]  * Marksmanship
+            [  0%]  * Beast Mastery
+            [100%]  * Survival
+    [100%]  * Careful Aim Phase
+    [100%]  * Manual Pool Focus keybind (LeftControl in combat)
+    [100%]  * Racials
+    [100%]  * Potions/Healthstone
+    [100%]  * Deterrence Usage
+    [100%]  * Automate AOE usage as per FH conditionals, other unlockers unsupported
+    [100%]  * Move Careful Aim into rotation
+
+    [100%]  * PvP Auto camouflage
+    [  0%]  * PvP Interrupts with custom list of spells
+    [  0%]  * PvP Auto build Focus for Tranquilizing Shot
+
+    [  0%]  * General code clean up
+
+
+----------------------------------------------------------------------------------------------------
+-- Version 0.2 Monk
+    ## Priority ##
+    [  0%]  * Burst heal target to 90% or greater.
+
+    ## Normal ##
+    [  0%]  * Single target healing logic
+    [  0%]  * Raid healing logic
+
+
+----------------------------------------------------------------------------------------------------
+-- Version 0.3 Death Knight
+-- Version 0.4 Shaman
+-- Version 0.5 Rogue
+-- Version 0.6 Druid
+-- Version 0.7 Paladin
+
+----------------------------------------------------------------------------------------------------
+-- Version x.0
+----------------------------------------------------------------------------------------------------
+?
