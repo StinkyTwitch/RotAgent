@@ -858,9 +858,11 @@ function()
 					end
 				end
 				if conf('autolfg', false) then
-					ProbablyEngine.config.read('autolfg', true)
+					--ProbablyEngine.config.read('autolfg', true)
+                    ProbablyEngine.config.write('autolfg', true)
 				else
-					ProbablyEngine.config.read('autolfg', false)
+					--ProbablyEngine.config.read('autolfg', false)
+                    ProbablyEngine.config.write('autolfg', false)
 				end
 			end
 		end),
