@@ -391,7 +391,7 @@ local combat = {
 		--------------------------------------------------------------------------------------------
 		--actions.aoe=stampede,if=
 			--buff.potion.up
-		{ s.Stampede, { "player.buff("..s.AgilityPotion..")", }, },
+		{ s.Stampede, { "player.buff("..s.AgilityPotionID..")", }, },
 			--|cooldown.potion.remains&buff.archmages_greater_incandescence_agi.up
 		{ s.Stampede, {
 			"player.item("..s.AgilityPotionID..").cooldown > 0",
@@ -504,7 +504,7 @@ local combat = {
 	------------------------------------------------------------------------------------------------
 	--actions+=/stampede,if=
 		--buff.potion.up
-	{ s.Stampede, { "player.buff("..s.AgilityPotion..")", }, },
+	{ s.Stampede, { "player.buff("..s.AgilityPotionID..")", }, },
 
 		--|(cooldown.potion.remains&(buff.archmages_greater_incandescence_agi.up)
 	{ s.Stampede, {
