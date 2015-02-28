@@ -145,14 +145,17 @@ local defensives = {
 local interrupts = {
 	{ s.CounterShot, {
 		"!player.casting",
+		"player.spell("..s.CounterShot..").cooldown = 0",
 		function() return dynamicEval("target.interruptAt("..conf('countershot', 50)..")") end,
 	}, },
 	{ s.Intimidation, {
 		"!player.casting",
+		"player.spell("..s.Intimidation..").cooldown = 0",
 		function() return dynamicEval("target.interruptAt("..conf('intimidation', 25)..")") end,
 	 }, },
 	{ s.WyvernSting, {
 		"!player.casting",
+		"player.spell("..s.WyvernSting..").cooldown = 0",
 		function() return dynamicEval("target.interruptAt("..conf('wyvernsting', 25)..")") end,
 	 }, },
 }
