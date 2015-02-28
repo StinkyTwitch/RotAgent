@@ -145,17 +145,14 @@ local defensives = {
 local interrupts = {
 	{ s.CounterShot, {
 		"!player.casting",
-		"player.spell("..s.CounterShot..").cooldown = 0",
 		function() return dynamicEval("target.interruptAt("..conf('countershot', 50)..")") end,
 	}, },
 	{ s.Intimidation, {
 		"!player.casting",
-		"player.spell("..s.Intimidation..").cooldown = 0",
 		function() return dynamicEval("target.interruptAt("..conf('intimidation', 25)..")") end,
 	 }, },
 	{ s.WyvernSting, {
 		"!player.casting",
-		"player.spell("..s.WyvernSting..").cooldown = 0",
 		function() return dynamicEval("target.interruptAt("..conf('wyvernsting', 25)..")") end,
 	 }, },
 }
@@ -621,7 +618,7 @@ ProbablyEngine.rotation.register_custom(255, "RotAgent - SurvivalTest",
 
 	{ bosshelp, function() return conf("bosslogic", true) == true end, },
 	{ defensives, function() return conf("defensives", true) == true end, },
-	{ interrupts, "modifier.interrupts", },
+	{ interrupts, },
 	{ miscellaneous, },
 	{ misdirects, function() return conf("misdirects", true) == true end, },
 	{ mouseovers, function() return conf("mouseovers", true) == true end, },
