@@ -1,0 +1,27 @@
+## Interface: 60100
+## Title: RotAgent
+## Notes: RotAgent (Rotation Agent) for ProbablyEngine
+## Author: StinkyTwitch
+## Version: 0.1.3.001
+## Dependencies: Probably
+
+Libs\LibDraw\LibStub.lua
+Libs\LibDraw\LibDraw.lua
+Overrides\Firehack.lua
+Overrides\PE.lua
+
+Libs\Globals.lua
+
+Libs\BossLogic.lua
+Libs\HelperNotifications.lua
+Libs\HelperWindows.lua
+Libs\LibHunter.lua
+Libs\LibMonk.lua
+Libs\SpellTables.lua
+Libs\UnitCacheManager.lua
+
+Rotations\Hunter\BeastMastery.lua
+Rotations\Hunter\Marksmanship.lua
+Rotations\Hunter\Survival.lua
+
+Rotations\Monk\Mistweaver.lua

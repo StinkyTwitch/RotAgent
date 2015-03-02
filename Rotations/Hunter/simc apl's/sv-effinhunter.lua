@@ -1,0 +1,39 @@
+---------------------------------------------------------
+-- Effinhunter SV 6.1
+---------------------------------------------------------
+--actions=auto_shot
+--actions+=/use_item,name=trinkets
+--actions+=/arcane_torrent,if=focus.deficit>=30
+--actions+=/blood_fury
+--actions+=/berserking
+--actions+=/potion,name=draenic_agility,if=(((cooldown.stampede.remains<1)&(cooldown.a_murder_of_crows.remains<1))&(trinket.stat.any.up|buff.archmages_greater_incandescence_agi.up))|target.time_to_die<=25
+--actions+=/call_action_list,name=aoe,if=active_enemies>1
+	--actions.aoe=/black_arrow,if=!ticking
+	--actions.aoe+=/a_murder_of_crows
+	--actions.aoe+=/barrage
+	--actions.aoe+=/multishot,if=buff.thrill_of_the_hunt.react
+	--actions.aoe+=/stampede,if=buff.potion.up|(cooldown.potion.remains&(buff.archmages_greater_incandescence_agi.up|trinket.stat.any.up|buff.archmages_incandescence_agi.up))
+	--actions.aoe+=/explosive_shot,if=active_enemies<3
+	--actions.aoe+=/explosive_trap,if=dot.explosive_trap.remains<=5
+	--actions.aoe+=/dire_beast
+	--actions.aoe+=/glaive_toss
+	--actions.aoe+=/powershot
+	--actions.aoe+=/cobra_shot,if=buff.pre_steady_focus.up&buff.steady_focus.remains<5&focus+14+cast_regen<80
+	--actions.aoe+=/multishot,if=focus>=70|talent.focusing_shot.enabled
+	--actions.aoe+=/focusing_shot
+	--actions.aoe+=/cobra_shot
+--actions+=/stampede,if=buff.potion.up|(cooldown.potion.remains&(buff.archmages_greater_incandescence_agi.up|trinket.stat.any.up))|target.time_to_die<=25
+--actions+=/black_arrow,if=!ticking
+--actions+=/explosive_shot
+--actions+=/a_murder_of_crows
+--actions+=/dire_beast
+--actions+=/arcane_shot,if=buff.thrill_of_the_hunt.react&focus>35&cast_regen<=focus.deficit|dot.serpent_sting.remains<=3|target.time_to_die<4.5
+--actions+=/glaive_toss
+--actions+=/powershot
+--actions+=/barrage
+--actions+=/explosive_trap,if=dot.explosive_trap.remains<=5
+--# Cast a second shot for steady focus if that won't cap us.
+--actions+=/cobra_shot,if=buff.pre_steady_focus.up&buff.steady_focus.remains<5&(14+cast_regen)<=focus.deficit<80
+--actions+=/arcane_shot,if=focus>=80|talent.focusing_shot.enabled
+--actions+=/focusing_shot
+--actions+=/cobra_shot

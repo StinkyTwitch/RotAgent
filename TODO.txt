@@ -1,0 +1,18 @@
+
+** BUGS **
+* Countershot needs a cooldown check, unfortunately
+* Redesign Aspect Config
+  * If checked, Aspect alwasy on. Turns off if in combat and not glyphed for it.
+
+** DESIGN GOALS **
+
+* Allow for drop in replacements
+  * ObjectManager code all in its own file
+  * Global code in one file
+  * Class code in one file
+  * NO GLOBALS if we can help it
+
+
+* Test
+  * If my Firehack Overrides interfere with other AddOns even if RotAgent isn't the active profile.
+  *
