@@ -110,21 +110,10 @@ function RotAgent.AutoTargetEnemy()
 		return false
 	end
 
-	if RotAgent.autoTargetAlgorithm == "lowest" or RotAgent.autoTargetAlgorithm == "nearest" then
-		for i=1, #RotAgent.unitCacheCombat do
-			local objectExists = UnitExists(RotAgent.unitCacheCombat[i].object)
-			local objectAttackable = UnitCanAttack("player", RotAgent.unitCacheCombat[i].object)
-
-			if objectExists then
-				if not RotAgent.TargetIsImmuneCheck(RotAgent.unitCacheCombat[i].object) then
-					if RotAgent.TargetIsInFrontCheck(RotAgent.unitCacheCombat[i].object) then
-						if objectAttackable then
-							return TargetUnit(RotAgent.unitCacheCombat[i].object)
-						end
-					end
-				end
-			end
-		end
+	if RotAgent.autoTargetAlgorithm == "lowest" then
+		return TargetUnit(RotAgent.lowestUnit)
+	elseif RotAgent.autoTargetAlgorithm == "nearest" then
+		return TargetUnit(RotAgent.nearestUnit)
 	else
 		for i=1, #RotAgent.unitCacheCombat do
 			if GetRaidTargetIndex(RotAgent.unitCacheCombat[i].object) == 8 then
@@ -134,18 +123,10 @@ function RotAgent.AutoTargetEnemy()
 		if UnitExists("focustarget") then
 			return TargetUnit("focustarget")
 		else
-			for i=1, #RotAgent.unitCacheCombat do
-				local objectExists = UnitExists(RotAgent.unitCacheCombat[i].object)
-
-				if objectExists then
-					if not RotAgent.TargetIsImmuneCheck(RotAgent.unitCacheCombat[i].object) then
-						if RotAgent.TargetIsInFrontCheck(RotAgent.unitCacheCombat[i].object) then
-							if UnitCanAttack("player", RotAgent.unitCacheCombat[i].object) then
-								return TargetUnit(RotAgent.unitCacheCombat[i].object)
-							end
-						end
-					end
-				end
+			if RotAgent.autoTargetAlgorithm == "lowest" then
+				return TargetUnit(RotAgent.lowestUnit)
+			elseif RotAgent.autoTargetAlgorithm == "nearest" then
+				return TargetUnit(RotAgent.nearestUnit)
 			end
 		end
 	end

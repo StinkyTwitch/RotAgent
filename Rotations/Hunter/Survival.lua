@@ -340,7 +340,10 @@ local azortharion = {
 		{ s.ExplosiveShot, { "player.buff("..s.LockandLoad..")", "talent(6,3)", }, },
 		{ s.ExplosiveShot, { "player.buff("..s.LockandLoad..")", "player.spell("..s.Barrage..").cooldown > 1", }, },
 		--actions.aoe+=/barrage
-		{ s.Barrage, { "!target.ccinarea(20)", function() return fetch("nocleave", false) == false end, }, },
+		{ s.Barrage, {
+			--"!target.ccinarea(20)",
+			function() return fetch("nocleave", false) == false end,
+		}, },
 		--actions.aoe+=/black_arrow,if=!ticking
 		{ s.BlackArrow, { "player.spell("..s.BlackArrow..").cooldown = 0", "target.deathin > 10", }, },
 		--actions.aoe+=/explosive_shot,if=active_enemies<5
@@ -349,7 +352,7 @@ local azortharion = {
 		{ s.ExplosiveTrap2, {
 			"player.spell("..s.ExplosiveTrap2..").cooldown = 0",
 			"player.buff("..s.TrapLauncher..")",
-			"!target.ccinarea(10)",
+			--"!target.ccinarea(10)",
 			"ground.cluster(10)",
 			function() return fetch("nocleave", false) == false end,
 		}, "target.ground", },
@@ -364,27 +367,33 @@ local azortharion = {
 			"player.buff("..s.ThrilloftheHunt..")",
 			"player.focus > 50",
 			function() return (dynamicEval("player.spell("..s.MultiShot..").regen") <= dynamicEval("player.focus.deficit")) end,
-			"!target.ccinarea(8)",
+			--"!target.ccinarea(8)",
 			function() return fetch("nocleave", false) == false end,
 		}, },
 		{ s.MultiShot, {
 			"player.buff("..s.ThrilloftheHunt..")",
 			"player.focus > 50",
 			"target.debuff("..s.SerpentSting..").duration <= 5",
-			"!target.ccinarea(8)",
+			--"!target.ccinarea(8)",
 			function() return fetch("nocleave", false) == false end,
 		}, },
 		{ s.MultiShot, {
 			"player.buff("..s.ThrilloftheHunt..")",
 			"player.focus > 50",
 			"target.deathin < 4.5",
-			"!target.ccinarea(8)",
+			--"!target.ccinarea(8)",
 			function() return fetch("nocleave", false) == false end,
 		}, },
 		--actions.aoe+=/glaive_toss
-		{ s.GlaiveToss, { "!target.ccinarea(10)", function() return fetch("nocleave", false) == false end, }, },
+		{ s.GlaiveToss, {
+			--"!target.ccinarea(10)",
+			function() return fetch("nocleave", false) == false end,
+		}, },
 		--actions.aoe+=/powershot
-		{ s.Powershot, { "!target.ccinarea(10)", function() return fetch("nocleave", false) == false end, }, },
+		{ s.Powershot, {
+			--"!target.ccinarea(10)",
+			function() return fetch("nocleave", false) == false end,
+		}, },
 		--actions.aoe+=/cobra_shot,if=buff.pre_steady_focus.up&buff.steady_focus.remains<5&focus+14+cast_regen<80
 		{ s.CobraShot, {
 			"lastcast("..s.CobraShot..")",
@@ -392,8 +401,16 @@ local azortharion = {
 			function() return ((dynamicEval("player.focus") + 14 + dynamicEval("player.spell("..s.CobraShot..").regen")) < 80) end,
 		}, },
 		--actions.aoe+=/multishot,if=focus>=70|talent.focusing_shot.enabled
-		{ s.MultiShot, { "player.focus > 70", "!target.ccinarea(8)", function() return fetch("nocleave", false) == false end, }, },
-		{ s.MultiShot, { "talent(7,2)", "!target.ccinarea(8)", function() return fetch("nocleave", false) == false end, }, },
+		{ s.MultiShot, {
+			"player.focus > 70",
+			--"!target.ccinarea(8)",
+			function() return fetch("nocleave", false) == false end,
+		}, },
+		{ s.MultiShot, {
+			"talent(7,2)",
+			--"!target.ccinarea(8)",
+			function() return fetch("nocleave", false) == false end,
+		}, },
 		--actions.aoe+=/focusing_shot
 		{ s.FocusingShot, },
 		--actions.aoe+=/cobra_shot
@@ -436,15 +453,24 @@ local azortharion = {
 	{ s.ExplosiveTrap2, {
 		"player.spell("..s.ExplosiveTrap2..").cooldown = 0",
 		"player.buff("..s.TrapLauncher..")",
-		"!target.ccinarea(10)",
+		--"!target.ccinarea(10)",
 		function() return fetch("nocleave", false) == false end,
 	}, "target.ground", },
 	--actions+=/barrage
-	{ s.Barrage, { "!target.ccinarea(20)", function() return fetch("nocleave", false) == false end, }, },
+	{ s.Barrage, {
+		--"!target.ccinarea(20)",
+		function() return fetch("nocleave", false) == false end,
+	}, },
 	--actions+=/glaive_toss
-	{ s.GlaiveToss, { "!target.ccinarea(10)", function() return fetch("nocleave", false) == false end, }, },
+	{ s.GlaiveToss, {
+		--"!target.ccinarea(10)",
+		function() return fetch("nocleave", false) == false end,
+	}, },
 	--actions+=/powershot
-	{ s.Powershot, { "!target.ccinarea(10)", function() return fetch("nocleave", false) == false end, }, },
+	{ s.Powershot, {
+		--"!target.ccinarea(10)",
+		function() return fetch("nocleave", false) == false end,
+	}, },
 	--actions+=/cobra_shot,if=buff.pre_steady_focus.up&buff.steady_focus.remains<5&(14+cast_regen)<=focus.deficit
 	{ s.CobraShot, {
 		"lastcast("..s.CobraShot..")",
@@ -1054,8 +1080,7 @@ function()
 
 				if FireHack then
 					RotAgent.CurrentTargetInfoTable("target")
-					RotAgent.UnitCacheManager(50)		-- Range is 50 yards from player
-					RotAgent.UnitCacheCombatManager(40)	-- Range is 40 yards from player
+					RotAgent.UnitCacheManager(40)		-- Range is 50 yards from player
 				end
 				-- Run ONLY if in Combat
 				if ProbablyEngine.module.player.combat then

@@ -177,9 +177,6 @@ end
 function RotAgent.HelperWindowCacheUpdate()
 	if RotAgent.helperWindowCacheShow then
 
-		local racachecount = table.getn(RotAgent.unitCacheCombat)
-		local fhuaucount = RotAgent.FireHackUAUCount
-
 		helperWindowCache_GUI.elements.unitcacheindextotal:SetText("\124cffFFFFFFCache Count = \124cff666666"..table.getn(RotAgent.unitCacheCombat).." \124cff4e7300 |  \124cffFFFFFFUAU Count = \124cff666666"..RotAgent.uauCacheSize)
 
 		if RotAgent.unitCacheCombat[1] ~= nil then

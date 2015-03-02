@@ -50,16 +50,16 @@ ProbablyEngine.condition.register("ccinarea", function(target, radius)
 
 		local targetGUID = UnitGUID(target)
 
-		for i=1, #RotAgent.unitCache do
-			local unitGUIDString = UnitGUID(RotAgent.unitCache[i].object)
+		for i=1, #RotAgent.unitCacheAll do
+			local unitGUIDString = UnitGUID(RotAgent.unitCacheAll[i].object)
 			local _,_,_,_,_,unitGUID,_ = strsplit("-",unitGUIDString)
 
 			if unitGUID ~= targetGUID then
 				local splashRadius = tonumber(radius)
-				local distance = RotAgent.Distance(target, RotAgent.unitCache[i].object)
-				local ccdUnit = RotAgent.SpecialAurasCheck(RotAgent.unitCache[i].object)
+				local distance = RotAgent.Distance(target, RotAgent.unitCacheAll[i].object)
+				local ccdUnit = RotAgent.SpecialAurasCheck(RotAgent.unitCacheAll[i].object)
 				if distance <= splashRadius and ccdUnit then
-					--RotAgent.Debug(5, "ccinarea "..distance..", "..RotAgent.unitCache[i].object.."("..tostring(ccdUnit)..")")
+					--RotAgent.Debug(5, "ccinarea "..distance..", "..RotAgent.unitCacheAll[i].object.."("..tostring(ccdUnit)..")")
 					return true
 				end
 			end
