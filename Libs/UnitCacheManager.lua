@@ -8,17 +8,6 @@
 --------------------------------------------------------------------------------------------------]]
 local RotAgentName, RotAgent = ...
 
--- Retruns the key for the supplied configuration table
-local function fetch(key, default)
-	return ProbablyEngine.interface.fetchKey('rasurvival', key, default)
-end
-
-RotAgent.lowestUnit = nil
-RotAgent.lowestUnitHealth = nil
-RotAgent.highestUnit = nil
-RotAgent.highestUnitHealth = nil
-RotAgent.nearestUnit = nil
-RotAgent.nearestUnitDistance = nil
 RotAgent.unitCacheAll = { }
 RotAgent.unitCacheCombat = { }
 
@@ -114,7 +103,12 @@ function RotAgent.UnitCacheManager(range)
 	-- 1
 	clearCacheAll()
 	clearCacheCombat()
-	local algorithm = fetch('autotargetalgorithm', 'highest')
+	RotAgent.lowestUnit = nil
+	RotAgent.lowestUnitHealth = nil
+	RotAgent.highestUnit = nil
+	RotAgent.highestUnitHealth = nil
+	RotAgent.nearestUnit = nil
+	RotAgent.nearestUnitDistance = nil
 
 	-- 2
 	if FireHack and ProbablyEngine.module.player.combat then
@@ -165,34 +159,26 @@ function RotAgent.UnitCacheManager(range)
 									tCombat.distance = objectDistance
 
 									-- 11
-									if algorithm == "lowest" then
-										if RotAgent.lowestUnitHealth == nil then
-											RotAgent.lowestUnitHealth = objectHealth
-											RotAgent.lowestUnit = object
-										elseif  objectHealth < RotAgent.lowestUnitHealth then
-											RotAgent.lowestUnitHealth = objectHealth
-											RotAgent.lowestUnit = object
-										end
-									elseif algorithm == "highest" then
-										if RotAgent.highestUnitHealth == nil then
-											print(object,objectHealth)
-											RotAgent.highestUnitHealth = objectHealth
-											RotAgent.highestUnit = object
-										elseif  objectHealth > RotAgent.highestUnitHealth then
-
-											RotAgent.highestUnitHealth = objectHealth
-											RotAgent.highestUnit = object
-										end
-									elseif algorithm == "nearest" then
-										if RotAgent.nearestUnitDistance == nil then
-											RotAgent.nearestUnitDistance = objectDistance
-											RotAgent.nearestUnit = object
-										elseif  objectDistance < RotAgent.nearestUnitDistance then
-											print(objectDistance,RotAgent.nearestUnitDistance)
-											RotAgent.nearestUnitDistance = objectDistance
-											RotAgent.nearestUnit = object
-										end
-
+									if RotAgent.lowestUnitHealth == nil then
+										RotAgent.lowestUnitHealth = objectHealth
+										RotAgent.lowestUnit = object
+									elseif  objectHealth < RotAgent.lowestUnitHealth then
+										RotAgent.lowestUnitHealth = objectHealth
+										RotAgent.lowestUnit = object
+									end
+									if RotAgent.highestUnitHealth == nil then
+										RotAgent.highestUnitHealth = objectHealth
+										RotAgent.highestUnit = object
+									elseif  objectHealth > RotAgent.highestUnitHealth then
+										RotAgent.highestUnitHealth = objectHealth
+										RotAgent.highestUnit = object
+									end
+									if RotAgent.nearestUnitDistance == nil then
+										RotAgent.nearestUnitDistance = objectDistance
+										RotAgent.nearestUnit = object
+									elseif  objectDistance < RotAgent.nearestUnitDistance then
+										RotAgent.nearestUnitDistance = objectDistance
+										RotAgent.nearestUnit = object
 									end
 								end
 							end
