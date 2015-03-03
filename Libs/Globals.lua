@@ -8,7 +8,10 @@
 --------------------------------------------------------------------------------------------------]]
 local RotAgentName, RotAgent = ...
 
-
+-- Retruns the key for the supplied configuration table
+local function fetch(key, default)
+	return ProbablyEngine.interface.fetchKey('rasurvival', key, default)
+end
 
 --[[------------------------------------------------------------------------------------------------
 TABLES/VARIABLES
@@ -109,11 +112,13 @@ function RotAgent.AutoTargetEnemy()
 		return false
 	end
 
-	if RotAgent.autoTargetAlgorithm == "lowest" then
+	local algorithm = fetch('autotargetalgorithm', 'highest')
+
+	if algorithm == "lowest" then
 		return TargetUnit(RotAgent.lowestUnit)
-	elseif RotAgent.autoTargetAlgorithm == "highest" then
+	elseif algorithm == "highest" then
 		return TargetUnit(RotAgent.highestUnit)
-	elseif RotAgent.autoTargetAlgorithm == "nearest" then
+	elseif algorithm == "nearest" then
 		return TargetUnit(RotAgent.nearestUnit)
 	else
 		for i=1, #RotAgent.unitCacheCombat do
@@ -124,9 +129,9 @@ function RotAgent.AutoTargetEnemy()
 		if UnitExists("focustarget") then
 			return TargetUnit("focustarget")
 		else
-			if RotAgent.autoTargetAlgorithm == "lowest" then
+			if algorithm == "lowest" then
 				return TargetUnit(RotAgent.lowestUnit)
-			elseif RotAgent.autoTargetAlgorithm == "nearest" then
+			elseif algorithm == "nearest" then
 				return TargetUnit(RotAgent.nearestUnit)
 			end
 		end

@@ -890,6 +890,11 @@ function()
 			{ type = 'rule', },
 
 			{ type = 'checkbox', key = 'autotarget', text = 'Auto Target Logic', default = true, },
+			{ type = 'dropdown', key = 'autotargetalgorithm', text = 'Auto Target Algorithm', list = {
+				{ key = 'highest', text = 'Highest HP' },
+				{ key = 'lowest', text = 'Lowest HP' },
+				{ key = 'nearest', text = 'Nearest' },
+			}, default = 'highest', },
 			{ type = 'checkbox', key = 'autotraplauncher', text = 'Auto Trap Launcher Logic', default = true, },
 			{ type = 'checkbox', key = 'autoaspect', text = 'Auto Aspect of the Cheetah', default = false, },
 			{ type = 'checkbox', key = 'bosslogic', text = 'Boss Logic', default = true, },

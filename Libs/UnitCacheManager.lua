@@ -7,8 +7,12 @@
 
 --------------------------------------------------------------------------------------------------]]
 local RotAgentName, RotAgent = ...
-RotAgent.autoTargetAlgorithm = "highest"
---RotAgent.cacheAlgorithm = "lowest"
+
+-- Retruns the key for the supplied configuration table
+local function fetch(key, default)
+	return ProbablyEngine.interface.fetchKey('rasurvival', key, default)
+end
+
 RotAgent.lowestUnit = nil
 RotAgent.lowestUnitHealth = nil
 RotAgent.highestUnit = nil
@@ -110,6 +114,7 @@ function RotAgent.UnitCacheManager(range)
 	-- 1
 	clearCacheAll()
 	clearCacheCombat()
+	local algorithm = fetch('autotargetalgorithm', 'highest')
 
 	-- 2
 	if FireHack and ProbablyEngine.module.player.combat then
@@ -160,7 +165,7 @@ function RotAgent.UnitCacheManager(range)
 									tCombat.distance = objectDistance
 
 									-- 11
-									if RotAgent.autoTargetAlgorithm == "lowest" then
+									if algorithm == "lowest" then
 										if RotAgent.lowestUnitHealth == nil then
 											RotAgent.lowestUnitHealth = objectHealth
 											RotAgent.lowestUnit = object
@@ -168,7 +173,7 @@ function RotAgent.UnitCacheManager(range)
 											RotAgent.lowestUnitHealth = objectHealth
 											RotAgent.lowestUnit = object
 										end
-									elseif RotAgent.autoTargetAlgorithm == "highest" then
+									elseif algorithm == "highest" then
 										if RotAgent.highestUnitHealth == nil then
 											print(object,objectHealth)
 											RotAgent.highestUnitHealth = objectHealth
@@ -178,11 +183,12 @@ function RotAgent.UnitCacheManager(range)
 											RotAgent.highestUnitHealth = objectHealth
 											RotAgent.highestUnit = object
 										end
-									elseif RotAgent.autoTargetAlgorithm == "nearest" then
+									elseif algorithm == "nearest" then
 										if RotAgent.nearestUnitDistance == nil then
 											RotAgent.nearestUnitDistance = objectDistance
 											RotAgent.nearestUnit = object
 										elseif  objectDistance < RotAgent.nearestUnitDistance then
+											print(objectDistance,RotAgent.nearestUnitDistance)
 											RotAgent.nearestUnitDistance = objectDistance
 											RotAgent.nearestUnit = object
 										end
