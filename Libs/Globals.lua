@@ -13,7 +13,6 @@ local RotAgentName, RotAgent = ...
 --[[------------------------------------------------------------------------------------------------
 TABLES/VARIABLES
 --------------------------------------------------------------------------------------------------]]
-RotAgent.autoTargetAlgorithm = "lowest"
 RotAgent.baseStatsTable = { }
 RotAgent.deathTrack = { }
 RotAgent.debugToggle = true
@@ -112,6 +111,8 @@ function RotAgent.AutoTargetEnemy()
 
 	if RotAgent.autoTargetAlgorithm == "lowest" then
 		return TargetUnit(RotAgent.lowestUnit)
+	elseif RotAgent.autoTargetAlgorithm == "highest" then
+		return TargetUnit(RotAgent.highestUnit)
 	elseif RotAgent.autoTargetAlgorithm == "nearest" then
 		return TargetUnit(RotAgent.nearestUnit)
 	else

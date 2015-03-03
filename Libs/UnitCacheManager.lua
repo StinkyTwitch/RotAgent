@@ -7,7 +7,8 @@
 
 --------------------------------------------------------------------------------------------------]]
 local RotAgentName, RotAgent = ...
-RotAgent.cacheAlgorithm = "lowest"
+RotAgent.autoTargetAlgorithm = "highest"
+--RotAgent.cacheAlgorithm = "lowest"
 RotAgent.lowestUnit = nil
 RotAgent.lowestUnitHealth = nil
 RotAgent.highestUnit = nil
@@ -130,6 +131,7 @@ function RotAgent.UnitCacheManager(range)
 					-- 6
 					if objectDistance <= range then
 						local objectHealth = UnitHealth(object)
+						local objectIsDead = UnitIsDead(object)
 
 						-- 7
 						if objectHealth > 0 then
@@ -158,7 +160,7 @@ function RotAgent.UnitCacheManager(range)
 									tCombat.distance = objectDistance
 
 									-- 11
-									if RotAgent.cacheAlgorithm == "lowest" then
+									if RotAgent.autoTargetAlgorithm == "lowest" then
 										if RotAgent.lowestUnitHealth == nil then
 											RotAgent.lowestUnitHealth = objectHealth
 											RotAgent.lowestUnit = object
@@ -166,15 +168,17 @@ function RotAgent.UnitCacheManager(range)
 											RotAgent.lowestUnitHealth = objectHealth
 											RotAgent.lowestUnit = object
 										end
-									elseif RotAgent.cacheAlgorithm == "highest" then
+									elseif RotAgent.autoTargetAlgorithm == "highest" then
 										if RotAgent.highestUnitHealth == nil then
+											print(object,objectHealth)
 											RotAgent.highestUnitHealth = objectHealth
 											RotAgent.highestUnit = object
-										elseif  objectHealth < RotAgent.highestUnitHealth then
+										elseif  objectHealth > RotAgent.highestUnitHealth then
+
 											RotAgent.highestUnitHealth = objectHealth
 											RotAgent.highestUnit = object
 										end
-									elseif RotAgent.cacheAlgorithm == "nearest" then
+									elseif RotAgent.autoTargetAlgorithm == "nearest" then
 										if RotAgent.nearestUnitDistance == nil then
 											RotAgent.nearestUnitDistance = objectDistance
 											RotAgent.nearestUnit = object
